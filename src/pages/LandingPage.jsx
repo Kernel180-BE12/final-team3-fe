@@ -1,5 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+
 
 // 아이콘 컴포넌트 (Lucide 아이콘 스타일의 인라인 SVG)
 const BotIcon = (props) => (
@@ -28,29 +31,8 @@ const ClockIcon = (props) => (
 );
 
 
-// 1. 헤더 컴포넌트 (HOME-001-HDR)
-const Header = () => {
-  return (
-    <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200">
-      <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        {/* HOME-001-HDR-001: 헤더 로고 */}
-        <a href="#" className="text-xl font-bold text-gray-800">
-          AI 알림톡 생성기
-        </a>
-        <nav className="space-x-4">
-          {/* HOME-001-HDR-002: 로그인 버튼 */}
-          <Link to="/login" className="text-gray-600 hover:text-indigo-600 transition-colors">
-            로그인
-          </Link>
-          {/* HOME-001-HDR-003: 회원가입 버튼 */}
-          <a href="/signup" className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors text-sm font-medium">
-            회원가입
-          </a>
-        </nav>
-      </div>
-    </header>
-  );
-};
+
+
 
 // 2. 히어로 섹션 컴포넌트 (HOME-001-SCT-001, BTN-001)
 const HeroSection = () => {
@@ -118,21 +100,8 @@ const FeatureSection = () => {
   );
 };
 
-// 4. 푸터 컴포넌트 (HOME-001-FTR-001)
-const Footer = () => {
-  return (
-    <footer className="bg-white border-t border-gray-200">
-      <div className="container mx-auto px-6 py-8 text-center text-gray-500">
-        <p>&copy; {new Date().getFullYear()} AI 알림톡 생성기. All rights reserved.</p>
-        <div className="mt-4 space-x-6">
-          <a href="#" className="hover:text-gray-800">회사 정보</a>
-          <a href="#" className="hover:text-gray-800">이용약관</a>
-          <a href="#" className="hover:text-gray-800">개인정보처리방침</a>
-        </div>
-      </div>
-    </footer>
-  );
-};
+
+
 
 
 // 메인 랜딩 페이지 컴포넌트
@@ -140,11 +109,13 @@ export default function App() {
     console.log('LandingPage 컴포넌트의 App 렌더링:', new Date().toLocaleTimeString());
     return (
         <div className="bg-white font-sans">
+            {/* // 1. 헤더 컴포넌트 (HOME-001-HDR) */}
             <Header />
             <main>
                 <HeroSection />
                 <FeatureSection />
             </main>
+             {/* // 4. 푸터 컴포넌트 (HOME-001-FTR-001) */}
             <Footer />
         </div>
     );
