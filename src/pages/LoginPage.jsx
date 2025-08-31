@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Footer from "@/components/Footer";
+import { useNavigate } from 'react-router-dom';
 
 // 카카오 로고 SVG 아이콘 컴포넌트
 const KakaoIcon = () => (
@@ -10,17 +11,49 @@ const KakaoIcon = () => (
 );
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   // 컴포넌트의 상태(State)를 관리합니다.
   // 이메일과 비밀번호 입력 값을 저장하기 위해 useState 훅을 사용합니다.
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   // 로그인 버튼 클릭 시 실행될 함수입니다.
-  // 현재는 콘솔에 입력 값을 출력하는 기능만 구현되어 있습니다.
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault(); // 폼 제출 시 페이지가 새로고침되는 것을 방지합니다.
-    console.log('로그인 시도:', { email, password });
-    // TODO: 실제 로그인 API 호출 로직을 여기에 구현해야 합니다.
+    
+    setIsLoading(true);
+    setError('');
+    
+    try {
+      const response = await fetch('http://localhost:8080/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // 로그인 성공 - 사용자 정보를 로컬 스토리지에 저장
+        localStorage.setItem('user', JSON.stringify(data.data));
+        alert('로그인이 성공했습니다!');
+        navigate('/'); // 홈페이지로 이동
+      } else {
+        setError(data.message || '로그인에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('로그인 오류:', error);
+      setError('서버와의 연결에 문제가 발생했습니다.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -34,6 +67,13 @@ export default function LoginPage() {
           </a>
           <h2 className="mt-2 text-xl text-gray-600">로그인</h2>
         </div>
+
+        {/* 에러 메시지 표시 */}
+        {error && (
+          <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-md">
+            {error}
+          </div>
+        )}
 
         {/* 로그인 폼 */}
         <form onSubmit={handleLogin}>
@@ -87,9 +127,10 @@ export default function LoginPage() {
           <div className="mt-6">
             <button
               type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              disabled={isLoading}
+              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-indigo-400 disabled:cursor-not-allowed"
             >
-              로그인
+              {isLoading ? '로그인 중...' : '로그인'}
             </button>
           </div>
         </form>
