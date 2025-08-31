@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useUserStore from '@/store/userStore';
+import useAuth from '@/hooks/useAuth';
 import Footer from "@/components/Footer";
 
 export default function SignupPage() {
   const navigate = useNavigate();
-  const { login } = useUserStore();
+  const { login } = useAuth();
   
   // 회원가입 폼의 각 입력 값을 관리하기 위한 state 설정
   const [formData, setFormData] = useState({
@@ -54,9 +54,7 @@ export default function SignupPage() {
       if (data.success) {
         alert('회원가입이 완료되었습니다!');
         // 회원가입 성공 시 JWT 토큰과 사용자 정보를 저장하고 대시보드로 이동
-        localStorage.setItem('token', data.data.token);
-        localStorage.setItem('user', JSON.stringify(data.data.user));
-        login(data.data.user);
+        login(data.data.token, data.data.user);
         console.log('회원가입 성공:', data.data);
         navigate('/dashboard');
       } else {

@@ -20,7 +20,6 @@ const getAuthHeaders = () => {
 const apiRequest = async (endpoint, options = {}) => {
   const url = `${API_BASE_URL}${endpoint}`;
   const config = {
-    headers: getAuthHeaders(),
     ...options,
     headers: {
       ...getAuthHeaders(),

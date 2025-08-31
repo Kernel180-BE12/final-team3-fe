@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthenticatedHeader from '@/components/AuthenticatedHeader';
+import Header from '@/components/Header';
 import Footer from "@/components/Footer";
 
 export default function DashboardPage() {
@@ -7,7 +7,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <div className="flex-1">
-        <AuthenticatedHeader />
+        <Header />
 
         {/* 메인 콘텐츠 */}
         <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
