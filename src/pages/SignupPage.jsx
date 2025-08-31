@@ -53,8 +53,10 @@ export default function SignupPage() {
 
       if (data.success) {
         alert('회원가입이 완료되었습니다!');
-        // 회원가입 성공 시 사용자 정보를 저장하고 대시보드로 이동
-        login(data.data);
+        // 회원가입 성공 시 JWT 토큰과 사용자 정보를 저장하고 대시보드로 이동
+        localStorage.setItem('token', data.data.token);
+        localStorage.setItem('user', JSON.stringify(data.data.user));
+        login(data.data.user);
         console.log('회원가입 성공:', data.data);
         navigate('/dashboard');
       } else {

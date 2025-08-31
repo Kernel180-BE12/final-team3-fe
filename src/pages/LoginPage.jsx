@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Footer from "@/components/Footer";
 import { useNavigate } from 'react-router-dom';
+import useAuth from '@/hooks/useAuth';
 
 // 카카오 로고 SVG 아이콘 컴포넌트
 const KakaoIcon = () => (
@@ -12,6 +13,8 @@ const KakaoIcon = () => (
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { login } = useAuth();
+  
   // 컴포넌트의 상태(State)를 관리합니다.
   // 이메일과 비밀번호 입력 값을 저장하기 위해 useState 훅을 사용합니다.
   const [email, setEmail] = useState('');
@@ -41,10 +44,10 @@ export default function LoginPage() {
       const data = await response.json();
       
       if (data.success) {
-        // 로그인 성공 - 사용자 정보를 로컬 스토리지에 저장
-        localStorage.setItem('user', JSON.stringify(data.data));
+        // 로그인 성공 - JWT 토큰과 사용자 정보를 useAuth 훅을 통해 저장
+        login(data.data.token, data.data.user);
         alert('로그인이 성공했습니다!');
-        navigate('/'); // 홈페이지로 이동
+        navigate('/dashboard'); // 대시보드로 이동
       } else {
         setError(data.message || '로그인에 실패했습니다.');
       }
