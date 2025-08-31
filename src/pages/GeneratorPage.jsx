@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 
 // --- 헬퍼 아이콘 컴포넌트들 ---
 const ArrowUpIcon = (props) => (
@@ -211,8 +210,6 @@ export default function GeneratorPage() {
           </main>
         </div>
       </div>
-      
-      <Footer />
     </div>
   );
 }
