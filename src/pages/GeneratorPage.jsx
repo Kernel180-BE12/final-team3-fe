@@ -18,8 +18,27 @@ const UserCircleIcon = (props) => (
 
 // --- 1. 사이드바 컴포넌트 ---
 const Sidebar = () => {
+    // 팝업 메뉴의 표시 상태를 관리하는 state
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    // 팝업 외부 클릭 감지를 위한 ref
+    const menuRef = useRef(null);
+
+    // 메뉴 외부 클릭 시 닫기 처리
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setIsMenuOpen(false);
+            }
+        };
+        // 이벤트 리스너 등록
+        document.addEventListener("mousedown", handleClickOutside);
+        // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [menuRef]);
+
     return (
-        // justify-between을 사용하여 상단과 하단 메뉴를 양 끝으로 정렬합니다.
         <div className="w-16 bg-gray-800 text-white flex flex-col items-center justify-between py-4">
             {/* 상단 메뉴 */}
             <nav className="flex flex-col space-y-4">
@@ -31,10 +50,23 @@ const Sidebar = () => {
                 </button>
             </nav>
             {/* 하단 사용자 메뉴 */}
-            <div>
-                 <button className="p-2 rounded-full hover:bg-gray-700 transition-colors">
+            <div ref={menuRef} className="relative">
+                 <button 
+                    onClick={() => setIsMenuOpen(!isMenuOpen)} // 아이콘 클릭 시 메뉴 토글
+                    className="p-2 rounded-full hover:bg-gray-700 transition-colors"
+                 >
                     <UserCircleIcon className="w-8 h-8 text-gray-400" />
                 </button>
+
+                {/* isMenuOpen이 true일 때만 팝업 메뉴를 표시 */}
+                {isMenuOpen && (
+                    <div className="absolute bottom-full mb-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 z-10">
+                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">템플릿 보관함</a>
+                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">계정 설정</a>
+                        <div className="border-t my-1 border-gray-100"></div>
+                        <a href="#" className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">로그아웃</a>
+                    </div>
+                )}
             </div>
         </div>
     );
