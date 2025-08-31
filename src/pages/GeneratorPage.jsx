@@ -1,12 +1,47 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Header from '@/components/Header';
 
 // --- 헬퍼 아이콘 컴포넌트들 ---
 const ArrowUpIcon = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
 );
+// 사이드바용 새 아이콘들
+const PlusCircleIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+);
+const LayoutGridIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="7" height="7" x="3" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="14" rx="1"></rect><rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+);
+const UserCircleIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="10" r="3"></circle><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"></path></svg>
+);
 
-// --- 1. 오른쪽 미리보기 패널 컴포넌트 ---
+
+// --- 1. 사이드바 컴포넌트 ---
+const Sidebar = () => {
+    return (
+        // justify-between을 사용하여 상단과 하단 메뉴를 양 끝으로 정렬합니다.
+        <div className="w-16 bg-gray-800 text-white flex flex-col items-center justify-between py-4">
+            {/* 상단 메뉴 */}
+            <nav className="flex flex-col space-y-4">
+                <button className="p-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition-colors">
+                    <PlusCircleIcon className="w-6 h-6" />
+                </button>
+                <button className="p-2 rounded-lg hover:bg-gray-700 transition-colors">
+                    <LayoutGridIcon className="w-6 h-6 text-gray-400" />
+                </button>
+            </nav>
+            {/* 하단 사용자 메뉴 */}
+            <div>
+                 <button className="p-2 rounded-full hover:bg-gray-700 transition-colors">
+                    <UserCircleIcon className="w-8 h-8 text-gray-400" />
+                </button>
+            </div>
+        </div>
+    );
+};
+
+
+// --- 2. 오른쪽 미리보기 패널 컴포넌트 ---
 const Preview = ({ version, showVariables }) => {
   // 변수 표시 토글에 따라 텍스트를 가공하는 함수
   const formatContent = (content) => {
@@ -54,7 +89,7 @@ const Preview = ({ version, showVariables }) => {
   );
 };
 
-// --- 2. 왼쪽 챗봇 패널 컴포넌트 ---
+// --- 3. 왼쪽 챗봇 패널 컴포넌트 ---
 const ChatPanel = ({ messages, onGenerate, onSelectVersion }) => {
   const [prompt, setPrompt] = useState('');
   const chatEndRef = useRef(null);
@@ -78,7 +113,7 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion }) => {
   };
 
   return (
-    <div className="w-full md:w-96 bg-white flex flex-col h-full">
+    <div className="w-full md:w-96 bg-white flex flex-col h-full border-r border-gray-200">
       {/* 대화 내용이 표시되는 영역 */}
       <div className="flex-1 p-6 space-y-4 overflow-y-auto">
         {messages.map(msg => (
@@ -126,7 +161,7 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion }) => {
   );
 };
 
-// --- 3. 메인 페이지 컴포넌트 (부모) ---
+// --- 4. 메인 페이지 컴포넌트 (부모) ---
 export default function GeneratorPage() {
   // 대화 내용을 저장할 배열 상태
   const [messages, setMessages] = useState([]);
@@ -137,8 +172,7 @@ export default function GeneratorPage() {
   // AI 생성 요청 핸들러
   const handleGenerate = (prompt) => {
     setIsLoading(true);
-    isLoading;
-      
+    
     // 1. 사용자 메시지를 대화에 추가
     const userMessage = { id: Date.now(), type: 'user', text: prompt };
     setMessages(prev => [...prev, userMessage]);
@@ -173,43 +207,36 @@ export default function GeneratorPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Header />
-      
-      <div className="flex-1 bg-gray-100 flex items-center justify-center p-4 sm:p-6 lg:p-8">
-        {/* 앱의 메인 컨테이너 (그림자, 둥근 모서리 적용) */}
-        <div className="flex h-[85vh] w-full max-w-7xl rounded-2xl shadow-2xl overflow-hidden">
-          {/* 왼쪽 챗봇 패널 */}
-          <ChatPanel 
-            messages={messages}
-            onGenerate={handleGenerate}
-            onSelectVersion={setSelectedVersion}
-          />
+    <div className="flex h-screen w-full bg-white overflow-hidden">
+        {/* 왼쪽 사이드바 */}
+        <Sidebar />
+        
+        {/* 챗봇 패널 */}
+        <ChatPanel 
+          messages={messages}
+          onGenerate={handleGenerate}
+          onSelectVersion={setSelectedVersion}
+        />
+        
+        {/* 오른쪽 미리보기 영역 */}
+        <main className="flex-1 flex flex-col bg-gradient-to-br from-blue-100 via-teal-100 to-green-100">
+          <header className="flex justify-end items-center p-4">
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-gray-600">변수값 표시</span>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" checked={showVariables} onChange={() => setShowVariables(!showVariables)} className="sr-only peer" />
+                <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+              </label>
+              <button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 text-sm font-medium">
+                이 카톡 발송하기
+              </button>
+            </div>
+          </header>
           
-          {/* 오른쪽 미리보기 영역 */}
-          <main className="flex-1 flex flex-col bg-gradient-to-br from-blue-100 via-teal-100 to-green-100">
-            {/* 상단 헤더 */}
-            <header className="flex justify-end items-center p-4">
-              <div className="flex items-center space-x-4">
-                <span className="text-sm text-gray-600">변수값 표시</span>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input type="checkbox" checked={showVariables} onChange={() => setShowVariables(!showVariables)} className="sr-only peer" />
-                  <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-                </label>
-                <button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 text-sm font-medium">
-                  보관함에 저장
-                </button>
-                <button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 text-sm font-medium">
-                  템플릿 복사
-                </button>
-              </div>
-            </header>
-            
-            {/* 미리보기 컴포넌트 */}
-            <Preview version={selectedVersion} showVariables={showVariables} />
-          </main>
-        </div>
-      </div>
+          <Preview version={selectedVersion} showVariables={showVariables} />
+        </main>
     </div>
   );
 }
+
+
