@@ -2,7 +2,25 @@
   "permissions": {
     "allow": [
       "Bash(git add:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Read(C:\\workdir\\github-space-cap/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee\\src/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee\\src/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee\\src\\main\\resources/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee\\src\\main\\java\\com\\ezlevup\\jober/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee\\src\\main\\java/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee\\src\\main\\java\\com\\ezlevup\\jober\\controller/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee\\src\\main\\resources/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee\\src\\main\\resources/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee/**)",
+      "Bash(./mvnw test)",
+      "Bash(./mvnw:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []

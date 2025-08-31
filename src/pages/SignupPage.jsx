@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useUserStore from '@/store/userStore';
 import Footer from "@/components/Footer";
 
 export default function SignupPage() {
+  const navigate = useNavigate();
+  const { login } = useUserStore();
+  
   // 회원가입 폼의 각 입력 값을 관리하기 위한 state 설정
   const [formData, setFormData] = useState({
     email: '',
@@ -48,8 +53,10 @@ export default function SignupPage() {
 
       if (data.success) {
         alert('회원가입이 완료되었습니다!');
-        // 회원가입 성공 시 로그인 페이지로 이동하거나 다른 처리
-        console.log('회원가입 성공:', data.user);
+        // 회원가입 성공 시 사용자 정보를 저장하고 대시보드로 이동
+        login(data.data);
+        console.log('회원가입 성공:', data.data);
+        navigate('/dashboard');
       } else {
         console.error('회원가입 실패:', data);
         if (data.fieldErrors) {
