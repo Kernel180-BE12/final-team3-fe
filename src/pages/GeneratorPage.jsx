@@ -35,7 +35,7 @@ const LogOutIcon = (props) => (
 
 
 // --- 1. 사이드바 컴포넌트 ---
-const Sidebar = ({ onLogout }) => {
+const Sidebar = ({ onLogout, user }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef(null);
 
@@ -75,7 +75,7 @@ const Sidebar = ({ onLogout }) => {
                         <div className="p-2">
                             <div className="flex items-center w-full px-3 py-2 text-sm">
                                 <UserCircleIcon className="w-5 h-5 mr-3" />
-                                <span>user@example.com</span>
+                                <span>{user?.email || 'user@example.com'}</span>
                             </div>
                         </div>
                         <div className="border-t border-gray-700 my-1"></div>
@@ -255,7 +255,7 @@ export default function GeneratorPage() {
   const [showVariables, setShowVariables] = useState(false);
   
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   // 로그아웃 핸들러
   const handleLogout = () => {
@@ -317,7 +317,7 @@ export default function GeneratorPage() {
 
   return (
     <div className="flex h-screen w-full bg-white overflow-hidden">
-        <Sidebar onLogout={handleLogout} />
+        <Sidebar onLogout={handleLogout} user={user} />
         <ChatPanel 
           messages={messages}
           onGenerate={handleGenerate}
