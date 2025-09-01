@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from 'react';
 const ArrowUpIcon = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
 );
-// 사이드바용 새 아이콘들
 const PlusCircleIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
 );
@@ -18,30 +17,25 @@ const UserCircleIcon = (props) => (
 
 // --- 1. 사이드바 컴포넌트 ---
 const Sidebar = () => {
-    // 팝업 메뉴의 표시 상태를 관리하는 state
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    // 팝업 외부 클릭 감지를 위한 ref
     const menuRef = useRef(null);
 
-    // 메뉴 외부 클릭 시 닫기 처리
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (menuRef.current && !menuRef.current.contains(event.target)) {
                 setIsMenuOpen(false);
             }
         };
-        // 이벤트 리스너 등록
         document.addEventListener("mousedown", handleClickOutside);
-        // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [menuRef]);
 
     return (
-        <div className="w-16 bg-gray-800 text-white flex flex-col items-center justify-between py-4">
+        <div className="w-16 bg-gray-800 text-white flex flex-col items-center">
             {/* 상단 메뉴 */}
-            <nav className="flex flex-col space-y-4">
+            <nav className="flex flex-col space-y-4 py-4">
                 <button className="p-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition-colors">
                     <PlusCircleIcon className="w-6 h-6" />
                 </button>
@@ -49,18 +43,16 @@ const Sidebar = () => {
                     <LayoutGridIcon className="w-6 h-6 text-gray-400" />
                 </button>
             </nav>
-            {/* 하단 사용자 메뉴 */}
-            <div ref={menuRef} className="relative">
+            {/* 하단 사용자 메뉴 - mt-auto로 하단에 배치 */}
+            <div ref={menuRef} className="relative mt-auto mb-4">
                  <button 
-                    onClick={() => setIsMenuOpen(!isMenuOpen)} // 아이콘 클릭 시 메뉴 토글
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
                     className="p-2 rounded-full hover:bg-gray-700 transition-colors"
                  >
                     <UserCircleIcon className="w-8 h-8 text-gray-400" />
                 </button>
-
-                {/* isMenuOpen이 true일 때만 팝업 메뉴를 표시 */}
                 {isMenuOpen && (
-                    <div className="absolute bottom-full mb-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 z-10">
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 z-10">
                         <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">템플릿 보관함</a>
                         <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">계정 설정</a>
                         <div className="border-t my-1 border-gray-100"></div>
@@ -75,17 +67,24 @@ const Sidebar = () => {
 
 // --- 2. 오른쪽 미리보기 패널 컴포넌트 ---
 const Preview = ({ version, showVariables }) => {
-  // 변수 표시 토글에 따라 텍스트를 가공하는 함수
+  // 템플릿 변수를 처리하는 함수
   const formatContent = (content) => {
     if (!content) return '';
+
+    // [수정됨] 변수값 표시가 활성화된 경우
     if (showVariables) {
-      // 변수를 실제 예시 값으로 치환
-      return content
-        .replace(/#\{고객명\}/g, '홍길동')
-        .replace(/#\{과목명\}/g, '가을학기 오리엔테이션')
-        .replace(/#\{연락처\}/g, '010-1234-5678');
+      // version.variables 배열이 없으면 원본 반환
+      if (!version.variables || version.variables.length === 0) {
+        return content;
+      }
+      // 배열을 순회하며 모든 변수를 sampleValue로 동적 치환
+      return version.variables.reduce((acc, variable) => {
+        // 정규표현식을 사용하여 모든 일치 항목을 변경 (g 플래그)
+        return acc.replace(new RegExp(variable.key, 'g'), variable.sampleValue);
+      }, content);
     }
-    // 변수를 강조 표시
+    
+    // 변수값 표시가 비활성화된 경우 (기존 로직 유지)
     return content.replace(/(#\{.*?\})/g, '<span class="font-bold text-yellow-700 bg-yellow-200 px-1 rounded-sm">$1</span>');
   };
 
@@ -93,11 +92,9 @@ const Preview = ({ version, showVariables }) => {
     <div className="flex-1 flex items-center justify-center p-8">
       {version ? (
         <div className="w-full max-w-sm mx-auto">
-          {/* 알림톡 상단 */}
           <div className="bg-yellow-400 text-xs text-gray-700 px-4 py-2 rounded-t-lg">
             알림톡 도착
           </div>
-          {/* 알림톡 본문 */}
           <div className="bg-white p-4 space-y-3 border-l border-r border-gray-200">
             <p className="font-bold text-lg">{version.title}</p>
             <p 
@@ -105,12 +102,18 @@ const Preview = ({ version, showVariables }) => {
               dangerouslySetInnerHTML={{ __html: formatContent(version.content) }}
             />
           </div>
-          {/* 알림톡 버튼 */}
-          <div className="bg-white p-4 rounded-b-lg border-t border-gray-200">
-            <button className="w-full text-center py-2 border border-gray-300 rounded-md text-blue-500 font-semibold bg-gray-50 hover:bg-gray-100">
-              과제 확인하기
-            </button>
-          </div>
+          {version.buttons && version.buttons.length > 0 && (
+             <div className="bg-white p-4 rounded-b-lg border-t border-gray-200 space-y-2">
+                {version.buttons.map((button, index) => (
+                    <button 
+                        key={index} 
+                        className="w-full text-center py-2 border border-gray-300 rounded-md text-blue-500 font-semibold bg-gray-50 hover:bg-gray-100"
+                    >
+                        {button.text}
+                    </button>
+                ))}
+            </div>
+          )}
         </div>
       ) : (
         <div className="text-center text-gray-500">
@@ -126,7 +129,6 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion }) => {
   const [prompt, setPrompt] = useState('');
   const chatEndRef = useRef(null);
 
-  // 새 메시지가 추가될 때마다 맨 아래로 스크롤
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -146,19 +148,17 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion }) => {
 
   return (
     <div className="w-full md:w-96 bg-white flex flex-col h-full border-r border-gray-200">
-      {/* 대화 내용이 표시되는 영역 */}
       <div className="flex-1 p-6 space-y-4 overflow-y-auto">
         {messages.map(msg => (
           <div key={msg.id} className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`p-3 rounded-lg max-w-xs ${msg.type === 'user' ? 'bg-gray-200' : 'bg-white border'}`}>
-              {/* 메시지 타입에 따라 다른 UI 렌더링 */}
               {msg.type === 'version' ? (
                 <div>
                   <button 
                     onClick={() => onSelectVersion(msg.versionData)}
                     className="bg-gray-800 text-white px-4 py-2 rounded-full font-bold hover:bg-gray-700 mb-2"
                   >
-                    버전 {msg.versionData.id} &gt;
+                    버전 {msg.versionData.templateId.split('_')[1]} &gt;
                   </button>
                   <p className="text-sm text-gray-700">{msg.text}</p>
                 </div>
@@ -170,7 +170,6 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion }) => {
         ))}
         <div ref={chatEndRef} />
       </div>
-      {/* 메시지 입력 영역 */}
       <div className="p-4 border-t bg-white">
         <div className="relative">
           <textarea
@@ -195,7 +194,6 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion }) => {
 
 // --- 4. 메인 페이지 컴포넌트 (부모) ---
 export default function GeneratorPage() {
-  // 대화 내용을 저장할 배열 상태
   const [messages, setMessages] = useState([]);
   const [selectedVersion, setSelectedVersion] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -204,34 +202,44 @@ export default function GeneratorPage() {
   // AI 생성 요청 핸들러
   const handleGenerate = (prompt) => {
     setIsLoading(true);
-    
-    // 1. 사용자 메시지를 대화에 추가
     const userMessage = { id: Date.now(), type: 'user', text: prompt };
     setMessages(prev => [...prev, userMessage]);
 
-    // 2. AI 응답 시뮬레이션
+    // [수정됨] AI 응답 시뮬레이션 (개선된 JSON 구조 사용)
     setTimeout(() => {
       const newVersionId = messages.filter(m => m.type === 'version').length + 1;
+      
       const newVersionData = {
-        id: newVersionId,
+        templateId: `TPL_${String(newVersionId).padStart(3, '0')}`,
         title: '[과제 안내]',
-        content: `안녕하세요, #{고객명}학부모님.\n#{과목명} 과제 관련 안내드립니다.\n\n📝 과제명: 과제 제출 안내\n\n문의 사항은 연락처 #{연락처}로 연락 주세요.`
+        content: `안녕하세요, #{고객명}학부모님.\n#{과목명} 과제 관련 안내드립니다.\n\n📝 과제명: 과제 제출 안내\n\n문의 사항은 연락처 #{연락처}로 연락 주세요.`,
+        buttons: [
+          {
+            type: 'WL', 
+            text: '과제 확인하기',
+            link: 'https://school.jober.io/homework/123'
+          }
+        ],
+        // [추가됨] 템플릿에 사용된 변수와 예시값 목록
+        variables: [
+            { key: '#{고객명}', sampleValue: '홍길동' },
+            { key: '#{과목명}', sampleValue: '가을학기 오리엔테이션' },
+            { key: '#{연락처}', sampleValue: '010-1234-5678' }
+        ]
       };
 
-      // 3. AI(봇) 메시지를 대화에 추가 (버전 정보 포함)
       const botMessage = {
         id: Date.now() + 1,
         type: 'version',
-        text: `'${prompt}' 문구에 대한 카카오 알림톡 템플릿이 성공적으로 생성되었습니다. 총 3개의 변수가 적용되었습니다.`,
+        text: `'${prompt}' 문구에 대한 카카오 알림톡 템플릿이 성공적으로 생성되었습니다. 총 ${newVersionData.variables.length}개의 변수가 적용되었습니다.`,
         versionData: newVersionData
       };
       setMessages(prev => [...prev, botMessage]);
-      setSelectedVersion(newVersionData); // 새로 생성된 버전을 바로 미리보기에 표시
+      setSelectedVersion(newVersionData);
       setIsLoading(false);
     }, 1500);
   };
   
-  // 컴포넌트가 처음 로드될 때 초기 데이터 생성
   useEffect(() => {
     setMessages([
       { id: 1, type: 'bot', text: '템플릿 생성을 위해 추가 정보가 필요합니다. 구체적인 목적, 대상 고객, 포함할 정보를 작성하시고, 마지막에 \'템플릿 생성\' 문구를 함께 입력해 주세요.' }
@@ -240,17 +248,12 @@ export default function GeneratorPage() {
 
   return (
     <div className="flex h-screen w-full bg-white overflow-hidden">
-        {/* 왼쪽 사이드바 */}
         <Sidebar />
-        
-        {/* 챗봇 패널 */}
         <ChatPanel 
           messages={messages}
           onGenerate={handleGenerate}
           onSelectVersion={setSelectedVersion}
         />
-        
-        {/* 오른쪽 미리보기 영역 */}
         <main className="flex-1 flex flex-col bg-gradient-to-br from-blue-100 via-teal-100 to-green-100">
           <header className="flex justify-end items-center p-4">
             <div className="flex items-center space-x-4">
@@ -264,11 +267,9 @@ export default function GeneratorPage() {
               </button>
             </div>
           </header>
-          
           <Preview version={selectedVersion} showVariables={showVariables} />
         </main>
     </div>
   );
 }
-
 

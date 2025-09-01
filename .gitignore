@@ -50,3 +50,23 @@ coverage/
 # Temporary files
 *.tmp
 *.temp
+
+# Build output
+build/
+out/
+
+# Dependencies
+package-lock.json
+
+# Storybook build outputs
+storybook-static
+
+# TypeScript
+*.tsbuildinfo
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Personal Claude settings
+.claude/settings.local.json
