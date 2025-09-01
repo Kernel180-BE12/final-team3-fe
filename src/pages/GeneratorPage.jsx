@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { templateApi } from '../utils/api';
+import { useAuth } from '../hooks/useAuth';
 
 // --- 헬퍼 아이콘 컴포넌트들 ---
 const ArrowUpIcon = (props) => (
@@ -33,7 +35,7 @@ const LogOutIcon = (props) => (
 
 
 // --- 1. 사이드바 컴포넌트 ---
-const Sidebar = () => {
+const Sidebar = ({ onLogout }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuRef = useRef(null);
 
@@ -93,9 +95,12 @@ const Sidebar = () => {
                              <a href="#" className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700">
                                  <LifeBuoyIcon className="mr-3" /> <span>도움말</span>
                             </a>
-                            <a href="#" className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700">
+                            <button 
+                                onClick={onLogout}
+                                className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700"
+                            >
                                  <LogOutIcon className="mr-3 text-red-500" /> <span className="text-red-500">로그아웃</span>
-                            </a>
+                            </button>
                         </div>
                     </div>
                 )}
@@ -248,6 +253,15 @@ export default function GeneratorPage() {
   const [selectedVersion, setSelectedVersion] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showVariables, setShowVariables] = useState(false);
+  
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  // 로그아웃 핸들러
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   // AI 생성 요청 핸들러 (백엔드 API 연동)
   const handleGenerate = async (prompt) => {
@@ -303,7 +317,7 @@ export default function GeneratorPage() {
 
   return (
     <div className="flex h-screen w-full bg-white overflow-hidden">
-        <Sidebar />
+        <Sidebar onLogout={handleLogout} />
         <ChatPanel 
           messages={messages}
           onGenerate={handleGenerate}
