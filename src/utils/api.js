@@ -78,4 +78,45 @@ export const logout = async () => {
   }
 };
 
+// 템플릿 관련 API 함수들
+export const templateApi = {
+  // 템플릿 생성 API 호출
+  generateTemplate: async (prompt, targetCustomer = '', purpose = '') => {
+    try {
+      const response = await api.post('/templates/generate', {
+        prompt,
+        targetCustomer,
+        purpose
+      });
+      
+      if (response && response.ok) {
+        const data = await response.json();
+        return data;
+      }
+      
+      throw new Error('템플릿 생성 실패');
+    } catch (error) {
+      console.error('템플릿 생성 오류:', error);
+      throw error;
+    }
+  },
+  
+  // 내 템플릿 목록 조회
+  getMyTemplates: async () => {
+    try {
+      const response = await api.get('/templates/my');
+      
+      if (response && response.ok) {
+        const data = await response.json();
+        return data;
+      }
+      
+      throw new Error('템플릿 목록 조회 실패');
+    } catch (error) {
+      console.error('템플릿 목록 조회 오류:', error);
+      throw error;
+    }
+  }
+};
+
 export default api;

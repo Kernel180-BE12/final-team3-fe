@@ -1,17 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { templateApi } from '../utils/api';
 
 // --- 헬퍼 아이콘 컴포넌트들 ---
 const ArrowUpIcon = (props) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
 );
 const PlusCircleIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
 );
 const LayoutGridIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="7" height="7" x="3" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="14" rx="1"></rect><rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="7" height="7" x="3" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="14" rx="1"></rect><rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
 );
 const UserCircleIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="10" r="3"></circle><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"></path></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="10" r="3"></circle><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"></path></svg>
+);
+// [추가됨] 메뉴 팝업을 위한 아이콘들
+const SparklesIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M12 3L9.5 8.5L4 11L9.5 13.5L12 19L14.5 13.5L20 11L14.5 8.5L12 3z"/><path d="M3 12L4.5 9.5L7 8L4.5 6.5L3 4"/><path d="M17 20L19.5 18.5L21 16L19.5 13.5L17 12"/></svg>
+);
+const SlidersHorizontalIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="21" x2="14" y1="4" y2="4"></line><line x1="10" x2="3" y1="4" y2="4"></line><line x1="21" x2="12" y1="12" y2="12"></line><line x1="8" x2="3" y1="12" y2="12"></line><line x1="21" x2="16" y1="20" y2="20"></line><line x1="12" x2="3" y1="20" y2="20"></line><line x1="14" x2="14" y1="2" y2="6"></line><line x1="8" x2="8" y1="10" y2="14"></line><line x1="16" x2="16" y1="18" y2="22"></line></svg>
+);
+const SettingsIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+);
+const LifeBuoyIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="4.93" x2="9.17" y1="4.93" y2="9.17"></line><line x1="14.83" x2="19.07" y1="14.83" y2="19.07"></line><line x1="14.83" x2="19.07" y1="9.17" y2="4.93"></line><line x1="4.93" x2="9.17" y1="19.07" y2="14.83"></line></svg>
+);
+const LogOutIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>
 );
 
 
@@ -52,11 +69,34 @@ const Sidebar = () => {
                     <UserCircleIcon className="w-8 h-8 text-gray-400" />
                 </button>
                 {isMenuOpen && (
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 bg-white rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5 z-10">
-                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">템플릿 보관함</a>
-                        <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">계정 설정</a>
-                        <div className="border-t my-1 border-gray-100"></div>
-                        <a href="#" className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100">로그아웃</a>
+                    <div className="absolute bottom-full left-0 mb-2 w-56 bg-gray-900 text-gray-200 rounded-lg shadow-lg z-10">
+                        <div className="p-2">
+                            <div className="flex items-center w-full px-3 py-2 text-sm">
+                                <UserCircleIcon className="w-5 h-5 mr-3" />
+                                <span>user@example.com</span>
+                            </div>
+                        </div>
+                        <div className="border-t border-gray-700 my-1"></div>
+                        <div className="p-2">
+                            <a href="#" className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700">
+                                 <SparklesIcon className="mr-3" /> <span>플랜 업그레이드</span>
+                            </a>
+                            <a href="#" className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700">
+                                 <SlidersHorizontalIcon className="mr-3" /> <span>템플릿 맞춤 설정</span>
+                            </a>
+                             <a href="#" className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700">
+                                 <SettingsIcon className="mr-3" /> <span>설정</span>
+                            </a>
+                        </div>
+                        <div className="border-t border-gray-700 my-1"></div>
+                        <div className="p-2">
+                             <a href="#" className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700">
+                                 <LifeBuoyIcon className="mr-3" /> <span>도움말</span>
+                            </a>
+                            <a href="#" className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700">
+                                 <LogOutIcon className="mr-3 text-red-500" /> <span className="text-red-500">로그아웃</span>
+                            </a>
+                        </div>
                     </div>
                 )}
             </div>
@@ -125,7 +165,7 @@ const Preview = ({ version, showVariables }) => {
 };
 
 // --- 3. 왼쪽 챗봇 패널 컴포넌트 ---
-const ChatPanel = ({ messages, onGenerate, onSelectVersion }) => {
+const ChatPanel = ({ messages, onGenerate, onSelectVersion, isLoading }) => {
   const [prompt, setPrompt] = useState('');
   const chatEndRef = useRef(null);
 
@@ -134,7 +174,7 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion }) => {
   }, [messages]);
 
   const handleGenerateClick = () => {
-    if (!prompt.trim()) return;
+    if (!prompt.trim() || isLoading) return;
     onGenerate(prompt);
     setPrompt('');
   };
@@ -177,14 +217,24 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion }) => {
             onChange={(e) => setPrompt(e.target.value)}
             onKeyPress={handleKeyPress}
             rows="1"
-            className="w-full p-3 pr-12 border rounded-full bg-gray-100 focus:ring-2 focus:ring-indigo-500 resize-none"
-            placeholder="발송하고 싶은 내용을 입력해주세요"
+            disabled={isLoading}
+            className={`w-full p-3 pr-12 border rounded-full bg-gray-100 focus:ring-2 focus:ring-indigo-500 resize-none ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            placeholder={isLoading ? "AI가 템플릿을 생성하고 있습니다..." : "발송하고 싶은 내용을 입력해주세요"}
           />
           <button 
             onClick={handleGenerateClick}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-indigo-600 hover:bg-indigo-700 rounded-full p-2"
+            disabled={isLoading || !prompt.trim()}
+            className={`absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2 transition-colors ${
+              isLoading || !prompt.trim() 
+                ? 'bg-gray-400 cursor-not-allowed' 
+                : 'bg-indigo-600 hover:bg-indigo-700'
+            }`}
           >
-            <ArrowUpIcon className="w-5 h-5 text-white" />
+            {isLoading ? (
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <ArrowUpIcon className="w-5 h-5 text-white" />
+            )}
           </button>
         </div>
       </div>
@@ -199,45 +249,50 @@ export default function GeneratorPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showVariables, setShowVariables] = useState(false);
 
-  // AI 생성 요청 핸들러
-  const handleGenerate = (prompt) => {
+  // AI 생성 요청 핸들러 (백엔드 API 연동)
+  const handleGenerate = async (prompt) => {
     setIsLoading(true);
     const userMessage = { id: Date.now(), type: 'user', text: prompt };
     setMessages(prev => [...prev, userMessage]);
 
-    // [수정됨] AI 응답 시뮬레이션 (개선된 JSON 구조 사용)
-    setTimeout(() => {
-      const newVersionId = messages.filter(m => m.type === 'version').length + 1;
+    try {
+      // 백엔드 API 호출
+      const response = await templateApi.generateTemplate(prompt);
       
-      const newVersionData = {
-        templateId: `TPL_${String(newVersionId).padStart(3, '0')}`,
-        title: '[과제 안내]',
-        content: `안녕하세요, #{고객명}학부모님.\n#{과목명} 과제 관련 안내드립니다.\n\n📝 과제명: 과제 제출 안내\n\n문의 사항은 연락처 #{연락처}로 연락 주세요.`,
-        buttons: [
-          {
-            type: 'WL', 
-            text: '과제 확인하기',
-            link: 'https://school.jober.io/homework/123'
-          }
-        ],
-        // [추가됨] 템플릿에 사용된 변수와 예시값 목록
-        variables: [
-            { key: '#{고객명}', sampleValue: '홍길동' },
-            { key: '#{과목명}', sampleValue: '가을학기 오리엔테이션' },
-            { key: '#{연락처}', sampleValue: '010-1234-5678' }
-        ]
-      };
-
-      const botMessage = {
+      if (response.success) {
+        const templateData = response.data;
+        
+        const botMessage = {
+          id: Date.now() + 1,
+          type: 'version',
+          text: `'${prompt}' 문구에 대한 카카오 알림톡 템플릿이 성공적으로 생성되었습니다. 총 ${templateData.variables?.length || 0}개의 변수가 적용되었습니다.`,
+          versionData: templateData
+        };
+        
+        setMessages(prev => [...prev, botMessage]);
+        setSelectedVersion(templateData);
+      } else {
+        // API 오류 처리
+        const errorMessage = {
+          id: Date.now() + 1,
+          type: 'bot',
+          text: response.message || '템플릿 생성 중 오류가 발생했습니다. 다시 시도해주세요.'
+        };
+        setMessages(prev => [...prev, errorMessage]);
+      }
+    } catch (error) {
+      console.error('템플릿 생성 오류:', error);
+      
+      // 네트워크 오류 등 예외 상황 처리
+      const errorMessage = {
         id: Date.now() + 1,
-        type: 'version',
-        text: `'${prompt}' 문구에 대한 카카오 알림톡 템플릿이 성공적으로 생성되었습니다. 총 ${newVersionData.variables.length}개의 변수가 적용되었습니다.`,
-        versionData: newVersionData
+        type: 'bot',
+        text: '서버와의 연결에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.'
       };
-      setMessages(prev => [...prev, botMessage]);
-      setSelectedVersion(newVersionData);
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
   
   useEffect(() => {
@@ -253,6 +308,7 @@ export default function GeneratorPage() {
           messages={messages}
           onGenerate={handleGenerate}
           onSelectVersion={setSelectedVersion}
+          isLoading={isLoading}
         />
         <main className="flex-1 flex flex-col bg-gradient-to-br from-blue-100 via-teal-100 to-green-100">
           <header className="flex justify-end items-center p-4">

@@ -22,7 +22,21 @@
       "Bash(npm install:*)",
       "Bash(npm run dev:*)",
       "mcp__ide__getDiagnostics",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee\\src\\main\\java\\com\\ezlevup\\jober\\controller/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee\\src\\main\\java\\com\\ezlevup\\jober\\controller/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee/**)",
+      "Bash(npm run lint)",
+      "Bash(npm run build:*)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee\\src\\main\\java\\com\\ezlevup\\jober\\config/**)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee\\src\\main\\java\\com\\ezlevup\\jober\\filter/**)",
+      "Bash(taskkill:*)",
+      "Bash(kill:*)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee/**)",
+      "Bash(timeout:*)",
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee\\src\\main\\java\\com\\ezlevup\\jober\\controller/**)"
     ],
     "deny": [],
     "ask": []
