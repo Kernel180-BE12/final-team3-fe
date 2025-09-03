@@ -122,15 +122,17 @@ const Preview = ({ version, showVariables }) => {
       if (!version.variables || version.variables.length === 0) {
         return content;
       }
-      // 배열을 순회하며 모든 변수를 sampleValue로 동적 치환
+      // 배열을 순회하며 모든 변수를 placeholder로 동적 치환
       return version.variables.reduce((acc, variable) => {
-        // 정규표현식을 사용하여 모든 일치 항목을 변경 (g 플래그)
-        return acc.replace(new RegExp(variable.key, 'g'), variable.sampleValue);
+        // 백엔드 응답 구조에 맞게 수정: key, sampleValue 사용
+        const placeholder = variable.key || variable.placeholder || `#{${variable.variableKey}}`;
+        const sampleValue = variable.sampleValue || variable.variableKey || 'sample';
+        return acc.replace(new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), sampleValue);
       }, content);
     }
     
     // 변수값 표시가 비활성화된 경우 (기존 로직 유지)
-    return content.replace(/(#\{.*?\})/g, '<span class="font-bold text-yellow-700 bg-yellow-200 px-1 rounded-sm">$1</span>');
+    return content.replace(/(#{.*?})/g, '<span class="font-bold text-yellow-700 bg-yellow-200 px-1 rounded-sm">$1</span>');
   };
 
   return (
@@ -203,7 +205,7 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion, isLoading }) => {
                     onClick={() => onSelectVersion(msg.versionData)}
                     className="bg-gray-800 text-white px-4 py-2 rounded-full font-bold hover:bg-gray-700 mb-2"
                   >
-                    버전 {msg.versionData.templateId.split('_')[1]} &gt;
+                    버전 {msg.versionData.id || msg.id} &gt;
                   </button>
                   <p className="text-sm text-gray-700">{msg.text}</p>
                 </div>
@@ -274,7 +276,10 @@ export default function GeneratorPage() {
       const response = await templateApi.generateTemplate(prompt);
       
       if (response.success) {
-        const templateData = response.data;
+        // 백엔드에서 문자열로 반환하므로 JSON.parse 필요
+        const templateData = typeof response.data.aiRes === 'string' 
+          ? JSON.parse(response.data.aiRes) 
+          : response.data.aiRes;
         
         const botMessage = {
           id: Date.now() + 1,
