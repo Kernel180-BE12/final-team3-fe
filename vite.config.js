@@ -1,11 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import path from 'path'
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { resolve } from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,7 +11,15 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src')
+      '@': resolve('src')
+    }
+  },
+  server: {
+    host: 'localhost',
+    port: 5173,
+    hmr: {
+      host: 'localhost',
+      port: 5173  // HMR 포트도 명시적으로 지정
     }
   }
 })
