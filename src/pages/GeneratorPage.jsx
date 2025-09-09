@@ -277,9 +277,9 @@ export default function GeneratorPage() {
       
       if (response.success) {
         // 백엔드에서 문자열로 반환하므로 JSON.parse 필요
-        const templateData = typeof response.data.aiRes === 'string' 
-          ? JSON.parse(response.data.aiRes) 
-          : response.data.aiRes;
+        const templateData = typeof response.data === 'string' 
+          ? JSON.parse(response.data) 
+          : response.data;
         
         const botMessage = {
           id: Date.now() + 1,
