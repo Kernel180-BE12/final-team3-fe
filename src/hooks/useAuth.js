@@ -25,6 +25,7 @@ export const useAuth = () => {
         setIsAuthenticated(false);
         // 잘못된 데이터 정리
         localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
         localStorage.removeItem('user');
       } finally {
         setLoading(false);
@@ -35,7 +36,7 @@ export const useAuth = () => {
 
     // localStorage 변경 감지 (다른 탭에서 로그인/로그아웃 시)
     const handleStorageChange = (e) => {
-      if (e.key === 'token' || e.key === 'user') {
+      if (e.key === 'token' || e.key === 'refreshToken' || e.key === 'user') {
         checkAuth();
       }
     };
@@ -44,8 +45,9 @@ export const useAuth = () => {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  const login = (token, userData) => {
+  const login = (token, refreshToken, userData) => {
     localStorage.setItem('token', token);
+    localStorage.setItem('refreshToken', refreshToken);
     localStorage.setItem('user', JSON.stringify(userData));
     setToken(token);
     setUser(userData);
@@ -54,6 +56,7 @@ export const useAuth = () => {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
     setToken(null);
     setUser(null);

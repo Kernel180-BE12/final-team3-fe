@@ -73,7 +73,10 @@ export const logout = async () => {
     const url = 'http://localhost:8580/auth/logout';
     const response = await fetch(url, {
       method: 'POST',
-      headers: getAuthHeaders()
+      headers: getAuthHeaders(),
+      body: JSON.stringify({
+                refreshToken: localStorage.getItem('refreshToken') // 또는 적절한 refresh token
+            })
     });
     if (response) {
       const data = await response.json();
