@@ -1,16 +1,20 @@
 // API 요청을 위한 유틸리티 함수
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = 'http://localhost:8580/api';
 
 // 토큰을 포함한 헤더를 자동으로 생성하는 함수
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
+  console.log('Token 값:', token);
   const headers = {
     'Content-Type': 'application/json',
   };
   
   if (token) {
     headers.Authorization = `Bearer ${token}`;
+    console.log('Authorization 헤더 추가됨:', `Bearer ${token}`);
+  } else {
+    console.log('Token이 없어서 Authorization 헤더 없음');
   }
   
   return headers;
@@ -66,7 +70,11 @@ export const api = {
 // 로그아웃 API 호출 (토큰 포함)
 export const logout = async () => {
   try {
-    const response = await api.post('/logout');
+    const url = 'http://localhost:8580/auth/logout';
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: getAuthHeaders()
+    });
     if (response) {
       const data = await response.json();
       return data;
@@ -81,10 +89,10 @@ export const logout = async () => {
 // 템플릿 관련 API 함수들
 export const templateApi = {
   // 템플릿 생성 API 호출
-  generateTemplate: async (prompt, targetCustomer = '', purpose = '') => {
+  generateTemplate: async (requestContent, targetCustomer = '', purpose = '') => {
     try {
-      const response = await api.post('/templates/generate', {
-        prompt,
+      const response = await api.post('/templates', {
+        requestContent,
         targetCustomer,
         purpose
       });
