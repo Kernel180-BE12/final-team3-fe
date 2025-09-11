@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>템플릿 생성 API 테스트</h1>
+    <button onclick="testApi()">템플릿 생성 테스트</button>
+    <div id="result" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc;"></div>
+
+    <script>
+        async function testApi() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '요청 중... (10초 정도 소요될 수 있습니다)';
+            
+            try {
+                const response = await fetch('http://localhost:8080/api/templates/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        prompt: "학부모님께 과제 안내 템플릿 생성",
+                        targetCustomer: "",
+                        purpose: ""
+                    })
+                });
+
+                const data = await response.json();
+                resultDiv.innerHTML = `
+                    <h3>응답 결과:</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <h3>오류:</h3>
+                    <p style="color: red;">${error.message}</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
