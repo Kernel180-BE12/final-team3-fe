@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 
 export default function SignupPage() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, loading: authLoading } = useAuth();
   
   // 회원가입 폼의 각 입력 값을 관리하기 위한 state 설정
   const [formData, setFormData] = useState({
@@ -37,7 +37,7 @@ export default function SignupPage() {
     }
 
     try {
-      const response = await fetch('http://localhost:8080/api/signup', {
+      const response = await fetch('http://localhost:8580/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export default function SignupPage() {
         body: JSON.stringify({
           email: formData.email,
           password: formData.password,
-          nickname: formData.nickname,
+          name: formData.nickname,
         }),
       });
 
@@ -53,10 +53,9 @@ export default function SignupPage() {
 
       if (data.success) {
         alert('회원가입이 완료되었습니다!');
-        // 회원가입 성공 시 JWT 토큰과 사용자 정보를 저장하고 대시보드로 이동
-        login(data.data.token, data.data.user);
+        // 회원가입 성공 시 로그인 페이지로 이동
         console.log('회원가입 성공:', data.data);
-        navigate('/dashboard');
+        navigate('/login');
       } else {
         console.error('회원가입 실패:', data);
         if (data.fieldErrors) {
@@ -84,6 +83,18 @@ export default function SignupPage() {
   // 모든 필수 항목이 채워졌는지 확인하여 가입하기 버튼 활성화 여부 결정
   const isFormValid = formData.email && formData.password && formData.passwordConfirm && formData.nickname && formData.termsAgreed && formData.privacyAgreed;
 
+  // 인증 상태 확인 중이면 로딩 표시
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex justify-center items-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">로딩 중...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <div className="flex-1 flex justify-center items-center py-12">
@@ -101,16 +112,16 @@ export default function SignupPage() {
           {/* ... (이메일, 비밀번호, 닉네임, 약관 동의 입력 필드는 이전과 동일) ... */}
           <div>
             <label htmlFor="email" className="text-sm font-medium text-gray-700">이메일 주소</label>
-            <input id="email" name="email" type="email" required value={formData.email} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+            <input id="email" name="email" autoComplete="username" type="email" required value={formData.email} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
           <div>
             <label htmlFor="password" className="text-sm font-medium text-gray-700">비밀번호</label>
-            <input id="password" name="password" type="password" required value={formData.password} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+            <input id="password" name="password" autoComplete="new-password" type="password" required value={formData.password} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
             <p className="mt-1 text-xs text-gray-500">8자 이상, 영문/숫자/특수문자 조합</p>
           </div>
           <div>
             <label htmlFor="passwordConfirm" className="text-sm font-medium text-gray-700">비밀번호 확인</label>
-            <input id="passwordConfirm" name="passwordConfirm" type="password" required value={formData.passwordConfirm} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+            <input id="passwordConfirm" name="passwordConfirm" autoComplete="new-password" type="password" required value={formData.passwordConfirm} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
           </div>
           <div>
             <label htmlFor="nickname" className="text-sm font-medium text-gray-700">이름 (닉네임)</label>
