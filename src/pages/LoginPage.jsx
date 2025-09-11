@@ -5,15 +5,16 @@ import useAuth from '@/hooks/useAuth';
 
 // 카카오 로고 SVG 아이콘 컴포넌트
 const KakaoIcon = () => (
-  <svg viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mr-2">
-    <path fill="#3A1D1D" d="M19 38c10.493 0 19-8.507 19-19S29.493 0 19 0 0 8.507 0 19s8.507 19 19 19z"></path>
-    <path fill="#FFEB00" d="M19.428 13.517c-4.237 0-7.67 2.75-7.67 6.143 0 2.34 1.638 4.413 4.028 5.48- .22.22-.463.418-.727.593-1.203.793-2.68 1.2-4.28 1.2-4.173 0-7.553-2.68-7.553-5.986C3.226 18.26 6.606 15.58 10.78 15.58c1.615 0 3.092.42 4.337 1.155.242-.336.507-.65.788-.942-1.66-1.55-3.8-2.276-6.05-2.276-5.52 0-9.988 3.52-9.988 7.86 0 4.34 4.468 7.86 9.988 7.86 2.19 0 4.225-.65 5.92-1.85.118.16.24.316.368.47.28.335.57.65.87.942-1.267.985-2.87 1.57-4.62 1.57-4.237 0-7.67-2.75-7.67-6.143 0-2.34 1.638-4.413 4.028-5.48.22-.22.463-.418.727-.593 1.203-.793 2.68-1.2 4.28-1.2 4.173 0 7.553 2.68 7.553 5.986 0 3.305-3.38 5.985-7.553 5.985-1.615 0-3.092-.42-4.337-1.155-.242.336-.507-.65-.788-.942 1.66 1.55 3.8 2.276 6.05 2.276 5.52 0 9.988-3.52 9.988-7.86 0-4.34-4.468-7.86-9.988-7.86-2.19 0-4.225-.65-5.92-1.85-.118-.16-.24.316-.368-.47-.28-.335-.57-.65-.87-.942 1.267-.985 2.87-1.57-4.62-1.57z"></path>
+  <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mr-2">
+    <ellipse cx="18" cy="18" rx="18" ry="18" fill="#FEE500"/>
+    <path d="M18 7C11.373 7 6 11.029 6 16c0 3.097 2.077 5.605 5.346 6.895L10.5 29l7.273-5.061c.14.009.281.014.427.014 6.627 0 12-4.029 12-9s-5.373-9-12-9z" fill="#391B1B"/>
   </svg>
 );
 
+
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, loading: authLoading } = useAuth();
   
   // 컴포넌트의 상태(State)를 관리합니다.
   // 이메일과 비밀번호 입력 값을 저장하기 위해 useState 훅을 사용합니다.
@@ -30,7 +31,7 @@ export default function LoginPage() {
     setError('');
     
     try {
-      const response = await fetch('http://localhost:8080/api/login', {
+      const response = await fetch('http://localhost:8580/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +46,10 @@ export default function LoginPage() {
       
       if (data.success) {
         // 로그인 성공 - JWT 토큰과 사용자 정보를 useAuth 훅을 통해 저장
-        login(data.data.token, data.data.user);
+        const userData = {
+          email: email
+        };
+        login(data.data.accessToken, userData);
         alert('로그인이 성공했습니다!');
         navigate('/dashboard'); // 대시보드로 이동
       } else {
@@ -58,6 +62,18 @@ export default function LoginPage() {
       setIsLoading(false);
     }
   };
+
+  // 인증 상태 확인 중이면 로딩 표시
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex justify-center items-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">로딩 중...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -162,7 +178,7 @@ export default function LoginPage() {
         {/* AUTH-001-LNK-001: 회원가입 링크 */}
         <p className="mt-8 text-center text-sm text-gray-600">
           계정이 없으신가요?{' '}
-          <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+          <a href="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
             회원가입
           </a>
         </p>
