@@ -49,7 +49,7 @@ export default function LoginPage() {
         const userData = {
           email: email
         };
-        login(data.data.accessToken, userData);
+        login(data.data.accessToken, data.data.refreshToken, userData);
         alert('로그인이 성공했습니다!');
         navigate('/dashboard'); // 대시보드로 이동
       } else {
