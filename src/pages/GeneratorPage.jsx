@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { templateApi } from '../utils/api';
+import { templateApi, logout as apiLogout } from '../utils/api';
 import { useAuth } from '../hooks/useAuth';
 
 // --- 헬퍼 아이콘 컴포넌트들 ---
@@ -70,6 +70,7 @@ const Sidebar = ({ onLogout, user }) => {
                  >
                     <UserCircleIcon className="w-8 h-8 text-gray-400" />
                 </button>
+                {/* [수정됨] 메뉴 팝업 UI 및 위치 */}
                 {isMenuOpen && (
                     <div className="absolute bottom-full left-0 mb-2 w-56 bg-gray-900 text-gray-200 rounded-lg shadow-lg z-10">
                         <div className="p-2">
@@ -95,12 +96,9 @@ const Sidebar = ({ onLogout, user }) => {
                              <a href="#" className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700">
                                  <LifeBuoyIcon className="mr-3" /> <span>도움말</span>
                             </a>
-                            <button 
-                                onClick={onLogout}
-                                className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700"
-                            >
+                            <a href="#" onClick={onLogout} className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700">
                                  <LogOutIcon className="mr-3 text-red-500" /> <span className="text-red-500">로그아웃</span>
-                            </button>
+                            </a>
                         </div>
                     </div>
                 )}
@@ -122,17 +120,15 @@ const Preview = ({ version, showVariables }) => {
       if (!version.variables || version.variables.length === 0) {
         return content;
       }
-      // 배열을 순회하며 모든 변수를 placeholder로 동적 치환
+      // 배열을 순회하며 모든 변수를 sampleValue로 동적 치환
       return version.variables.reduce((acc, variable) => {
-        // 백엔드 응답 구조에 맞게 수정: key, sampleValue 사용
-        const placeholder = variable.key || variable.placeholder || `#{${variable.variableKey}}`;
-        const sampleValue = variable.sampleValue || variable.variableKey || 'sample';
-        return acc.replace(new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), sampleValue);
+        // 정규표현식을 사용하여 모든 일치 항목을 변경 (g 플래그)
+        return acc.replace(new RegExp(variable.key, 'g'), variable.sampleValue);
       }, content);
     }
     
     // 변수값 표시가 비활성화된 경우 (기존 로직 유지)
-    return content.replace(/(#{.*?})/g, '<span class="font-bold text-yellow-700 bg-yellow-200 px-1 rounded-sm">$1</span>');
+    return content.replace(/(#\{.*?\})/g, '<span class="font-bold text-yellow-700 bg-yellow-200 px-1 rounded-sm">$1</span>');
   };
 
   return (
@@ -142,7 +138,8 @@ const Preview = ({ version, showVariables }) => {
           <div className="bg-yellow-400 text-xs text-gray-700 px-4 py-2 rounded-t-lg">
             알림톡 도착
           </div>
-          <div className="bg-white p-4 space-y-3 border-l border-r border-gray-200">
+          {/* [수정됨] 내용이 길어질 경우 스크롤 기능 추가 */}
+          <div className="bg-white p-4 space-y-3 border-l border-r border-gray-200 max-h-96 overflow-y-auto">
             <p className="font-bold text-lg">{version.title}</p>
             <p 
               className="text-gray-800 whitespace-pre-wrap"
@@ -205,7 +202,7 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion, isLoading }) => {
                     onClick={() => onSelectVersion(msg.versionData)}
                     className="bg-gray-800 text-white px-4 py-2 rounded-full font-bold hover:bg-gray-700 mb-2"
                   >
-                    버전 {msg.versionData.id || msg.id} &gt;
+                    버전 {msg.versionData.templateId.split('_')[1]} &gt;
                   </button>
                   <p className="text-sm text-gray-700">{msg.text}</p>
                 </div>
@@ -215,6 +212,13 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion, isLoading }) => {
             </div>
           </div>
         ))}
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="p-3 rounded-lg max-w-xs bg-white border">
+              <p className="text-sm text-gray-800">템플릿을 생성하고 있습니다...</p>
+            </div>
+          </div>
+        )}
         <div ref={chatEndRef} />
       </div>
       <div className="p-4 border-t bg-white">
@@ -224,24 +228,19 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion, isLoading }) => {
             onChange={(e) => setPrompt(e.target.value)}
             onKeyPress={handleKeyPress}
             rows="1"
-            disabled={isLoading}
-            className={`w-full p-3 pr-12 border rounded-full bg-gray-100 focus:ring-2 focus:ring-indigo-500 resize-none ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-            placeholder={isLoading ? "AI가 템플릿을 생성하고 있습니다..." : "발송하고 싶은 내용을 입력해주세요"}
+            className="w-full p-3 pr-12 border rounded-full bg-gray-100 focus:ring-2 focus:ring-indigo-500 resize-none"
+            placeholder="발송하고 싶은 내용을 입력해주세요"
           />
           <button 
             onClick={handleGenerateClick}
             disabled={isLoading || !prompt.trim()}
-            className={`absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2 transition-colors ${
+            className={`absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2 ${
               isLoading || !prompt.trim() 
                 ? 'bg-gray-400 cursor-not-allowed' 
                 : 'bg-indigo-600 hover:bg-indigo-700'
             }`}
           >
-            {isLoading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-            ) : (
-              <ArrowUpIcon className="w-5 h-5 text-white" />
-            )}
+            <ArrowUpIcon className="w-5 h-5 text-white" />
           </button>
         </div>
       </div>
@@ -255,58 +254,68 @@ export default function GeneratorPage() {
   const [selectedVersion, setSelectedVersion] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showVariables, setShowVariables] = useState(false);
-  
+
   const navigate = useNavigate();
   const { logout, user } = useAuth();
 
   // 로그아웃 핸들러
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await apiLogout(); // 백엔드 API 호출
+    } catch (error) {
+      console.error('백엔드 로그아웃 실패:', error);
+    }
+	
     logout();
     navigate('/login');
   };
-
-  // AI 생성 요청 핸들러 (백엔드 API 연동)
+  
+  // AI 생성 요청 핸들러
   const handleGenerate = async (prompt) => {
     setIsLoading(true);
     const userMessage = { id: Date.now(), type: 'user', text: prompt };
     setMessages(prev => [...prev, userMessage]);
 
     try {
-      // 백엔드 API 호출
+      // templateApi.generateTemplate 호출
       const response = await templateApi.generateTemplate(prompt);
       
-      if (response.success) {
-        // 백엔드에서 문자열로 반환하므로 JSON.parse 필요
-        const templateData = typeof response.data === 'string' 
-          ? JSON.parse(response.data) 
-          : response.data;
+      if (response && response.success) {
+        const templateData = response.data;
         
+        // API 응답을 기존 구조에 맞게 변환
+        const newVersionData = {
+          templateId: templateData.templateId || `TPL_${Date.now()}`,
+          title: templateData.title || '생성된 템플릿',
+          content: templateData.content || '',
+          buttons: templateData.buttons || [],
+          variables: templateData.variables || []
+        };
+
         const botMessage = {
           id: Date.now() + 1,
           type: 'version',
-          text: `'${prompt}' 문구에 대한 카카오 알림톡 템플릿이 성공적으로 생성되었습니다. 총 ${templateData.variables?.length || 0}개의 변수가 적용되었습니다.`,
-          versionData: templateData
+          text: `'${prompt}' 문구에 대한 카카오 알림톡 템플릿이 성공적으로 생성되었습니다. 총 ${newVersionData.variables.length}개의 변수가 적용되었습니다.`,
+          versionData: newVersionData
         };
         
         setMessages(prev => [...prev, botMessage]);
-        setSelectedVersion(templateData);
+        setSelectedVersion(newVersionData);
       } else {
-        // API 오류 처리
+        // API 호출은 성공했지만 응답이 실패인 경우
         const errorMessage = {
           id: Date.now() + 1,
           type: 'bot',
-          text: response.message || '템플릿 생성 중 오류가 발생했습니다. 다시 시도해주세요.'
+          text: response.message || '템플릿 생성에 실패했습니다. 다시 시도해주세요.'
         };
         setMessages(prev => [...prev, errorMessage]);
       }
     } catch (error) {
       console.error('템플릿 생성 오류:', error);
-      
-      // 네트워크 오류 등 예외 상황 처리
       const errorMessage = {
         id: Date.now() + 1,
         type: 'bot',
-        text: '서버와의 연결에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.'
+        text: '템플릿 생성 중 오류가 발생했습니다. 네트워크 연결을 확인하고 다시 시도해주세요.'
       };
       setMessages(prev => [...prev, errorMessage]);
     } finally {
