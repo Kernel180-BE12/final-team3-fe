@@ -106,6 +106,14 @@ const FeatureSection = () => {
 
 // 메인 랜딩 페이지 컴포넌트
 export default function App() {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  const appEnv = import.meta.env.VITE_APP_ENV;
+  const debugMode = import.meta.env.VITE_DEBUG_MODE;
+
+  console.log('현재 환경:', appEnv);
+  console.log('API URL:', apiUrl);
+  console.log('디버그 모드:', debugMode);
+
     console.log('LandingPage 컴포넌트의 App 렌더링:', new Date().toLocaleTimeString());
     return (
         <div className="bg-white font-sans">
