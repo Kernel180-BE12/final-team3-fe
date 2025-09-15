@@ -311,7 +311,9 @@ export default function GeneratorPage() {
         setMessages(prev => [...prev, errorMessage]);
       }
     } catch (error) {
-      console.error('템플릿 생성 오류:', error);
+      console.error('템플릿 생성 오류 g:', error);
+      console.error(error.response?.data);
+      console.error(error.message);
       const errorMessage = {
         id: Date.now() + 1,
         type: 'bot',
