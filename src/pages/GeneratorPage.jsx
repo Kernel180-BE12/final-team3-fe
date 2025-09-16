@@ -32,7 +32,13 @@ const LifeBuoyIcon = (props) => (
 const LogOutIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>
 );
-
+// 중간 메뉴를 위한 아이콘
+const MessageSquareIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+);
+const ArchiveIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="20" height="5" x="2" y="3" rx="1"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path><path d="M10 12h4"></path></svg>
+);
 
 // --- 1. 사이드바 컴포넌트 ---
 const Sidebar = ({ onLogout, user }) => {
@@ -61,6 +67,25 @@ const Sidebar = ({ onLogout, user }) => {
                 <button className="p-2 rounded-lg hover:bg-gray-700 transition-colors">
                     <LayoutGridIcon className="w-6 h-6 text-gray-400" />
                 </button>
+            </nav>
+            {/* 중간 메뉴 */}
+            <nav className="flex flex-col space-y-2 py-4 border-t border-gray-700">
+                 <div className="relative group flex justify-center">
+                    <button className="p-3 rounded-lg hover:bg-gray-700 transition-colors">
+                        <MessageSquareIcon className="w-6 h-6 text-gray-400" />
+                    </button>
+                    <div className="absolute left-full ml-4 px-2 py-1 bg-gray-900 text-white text-xs rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        대화 목록
+                    </div>
+                </div>
+                 <div className="relative group flex justify-center">
+                    <button className="p-3 rounded-lg hover:bg-gray-700 transition-colors">
+                        <ArchiveIcon className="w-6 h-6 text-gray-400" />
+                    </button>
+                    <div className="absolute left-full ml-4 px-2 py-1 bg-gray-900 text-white text-xs rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        저장된 항목
+                    </div>
+                </div>
             </nav>
             {/* 하단 사용자 메뉴 - mt-auto로 하단에 배치 */}
             <div ref={menuRef} className="relative mt-auto mb-4">
@@ -280,7 +305,7 @@ export default function GeneratorPage() {
       // templateApi.generateTemplate 호출
       const response = await templateApi.generateTemplate(prompt);
       
-      if (response && response.success) {
+      if (response) {
         const templateData = response.data;
         
         // API 응답을 기존 구조에 맞게 변환
