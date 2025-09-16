@@ -44,7 +44,7 @@ export default function LoginPage() {
       
       const data = await response.json();
       
-      if (data.success) {
+      if (response.ok) {
         // 로그인 성공 - JWT 토큰과 사용자 정보를 useAuth 훅을 통해 저장
         const userData = {
           email: email
