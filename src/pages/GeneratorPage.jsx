@@ -16,7 +16,6 @@ const LayoutGridIcon = (props) => (
 const UserCircleIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="10" r="3"></circle><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"></path></svg>
 );
-// [추가됨] 메뉴 팝업을 위한 아이콘들
 const SparklesIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M12 3L9.5 8.5L4 11L9.5 13.5L12 19L14.5 13.5L20 11L14.5 8.5L12 3z"/><path d="M3 12L4.5 9.5L7 8L4.5 6.5L3 4"/><path d="M17 20L19.5 18.5L21 16L19.5 13.5L17 12"/></svg>
 );
@@ -24,7 +23,7 @@ const SlidersHorizontalIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="21" x2="14" y1="4" y2="4"></line><line x1="10" x2="3" y1="4" y2="4"></line><line x1="21" x2="12" y1="12" y2="12"></line><line x1="8" x2="3" y1="12" y2="12"></line><line x1="21" x2="16" y1="20" y2="20"></line><line x1="12" x2="3" y1="20" y2="20"></line><line x1="14" x2="14" y1="2" y2="6"></line><line x1="8" x2="8" y1="10" y2="14"></line><line x1="16" x2="16" y1="18" y2="22"></line></svg>
 );
 const SettingsIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l-.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
 );
 const LifeBuoyIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><line x1="4.93" x2="9.17" y1="4.93" y2="9.17"></line><line x1="14.83" x2="19.07" y1="14.83" y2="19.07"></line><line x1="14.83" x2="19.07" y1="9.17" y2="4.93"></line><line x1="4.93" x2="9.17" y1="19.07" y2="14.83"></line></svg>
@@ -39,7 +38,6 @@ const MessageSquareIcon = (props) => (
 const ArchiveIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="20" height="5" x="2" y="3" rx="1"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path><path d="M10 12h4"></path></svg>
 );
-// [추가됨] 홈 아이콘 컴포넌트
 const HomeIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
 );
@@ -63,19 +61,28 @@ const Sidebar = ({ onLogout, user }) => {
     }, [menuRef]);
 
     return (
-        <div className="w-16 bg-gray-800 text-white flex flex-col items-center">
+        <div className="w-16 bg-gray-800 text-white flex flex-col items-center z-20">
             {/* 상단 메뉴 */}
-            <nav className="flex flex-col space-y-4 py-4">
-                <button className="p-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition-colors">
-                    <PlusCircleIcon className="w-6 h-6" />
-                </button>
-                <button className="p-2 rounded-lg hover:bg-gray-700 transition-colors">
-                    <LayoutGridIcon className="w-6 h-6 text-gray-400" />
-                </button>
+            <nav className="flex flex-col space-y-2 py-4">
+                <div className="relative group flex justify-center">
+                    <button className="p-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition-colors">
+                        <PlusCircleIcon className="w-6 h-6" />
+                    </button>
+                    <div className="absolute left-full ml-4 px-2 py-1 bg-gray-900 text-white text-xs rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        새 템플릿 생성
+                    </div>
+                </div>
+                <div className="relative group flex justify-center">
+                    <button className="p-3 rounded-lg hover:bg-gray-700 transition-colors">
+                        <LayoutGridIcon className="w-6 h-6 text-gray-400" />
+                    </button>
+                    <div className="absolute left-full ml-4 px-2 py-1 bg-gray-900 text-white text-xs rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        템플릿 보관함
+                    </div>
+                </div>
             </nav>
             {/* 중간 메뉴 */}
-        <nav className="flex flex-col space-y-2 py-4 border-t border-gray-700">
-          {/* [수정됨] 홈 아이콘 및 링크 추가 */}
+            <nav className="flex flex-col space-y-2 py-4 border-t border-gray-700">
                 <div className="relative group flex justify-center">
                     <a href="/" className="p-3 rounded-lg hover:bg-gray-700 transition-colors">
                         <HomeIcon className="w-6 h-6 text-gray-400" />
@@ -83,8 +90,7 @@ const Sidebar = ({ onLogout, user }) => {
                     <div className="absolute left-full ml-4 px-2 py-1 bg-gray-900 text-white text-xs rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                         홈
                     </div>
-          </div>
-          
+                </div>
                  <div className="relative group flex justify-center">
                     <button className="p-3 rounded-lg hover:bg-gray-700 transition-colors">
                         <MessageSquareIcon className="w-6 h-6 text-gray-400" />
@@ -110,9 +116,9 @@ const Sidebar = ({ onLogout, user }) => {
                  >
                     <UserCircleIcon className="w-8 h-8 text-gray-400" />
                 </button>
-                {/* [수정됨] 메뉴 팝업 UI 및 위치 */}
+                {/* 메뉴 팝업 UI 및 위치 */}
                 {isMenuOpen && (
-                    <div className="absolute bottom-full left-0 mb-2 w-56 bg-gray-900 text-gray-200 rounded-lg shadow-lg z-10">
+                    <div className="absolute bottom-full left-0 mb-2 w-56 bg-gray-900 text-gray-200 rounded-lg shadow-lg">
                         <div className="p-2">
                             <div className="flex items-center w-full px-3 py-2 text-sm">
                                 <UserCircleIcon className="w-5 h-5 mr-3" />
@@ -154,21 +160,24 @@ const Preview = ({ version, showVariables }) => {
   const formatContent = (content) => {
     if (!content) return '';
 
-    // [수정됨] 변수값 표시가 활성화된 경우
+    // 변수값 표시가 활성화된 경우
     if (showVariables) {
-      // version.variables 배열이 없으면 원본 반환
       if (!version.variables || version.variables.length === 0) {
         return content;
       }
-      // 배열을 순회하며 모든 변수를 sampleValue로 동적 치환
       return version.variables.reduce((acc, variable) => {
-        // 정규표현식을 사용하여 모든 일치 항목을 변경 (g 플래그)
-        return acc.replace(new RegExp(variable.key, 'g'), variable.sampleValue);
+        return acc.replace(new RegExp(variable.placeholder, 'g'), variable.variableKey);
       }, content);
     }
     
-    // 변수값 표시가 비활성화된 경우 (기존 로직 유지)
-    return content.replace(/(#\{.*?\})/g, '<span class="font-bold text-yellow-700 bg-yellow-200 px-1 rounded-sm">$1</span>');
+    // 변수값 표시가 비활성화된 경우
+    if (version.variables) {
+      return version.variables.reduce((acc, variable) => {
+        const highlightedVar = `<span class="font-bold text-yellow-700 bg-yellow-200 px-1 rounded-sm">${variable.placeholder}</span>`;
+        return acc.replace(new RegExp(variable.placeholder, 'g'), highlightedVar);
+      }, content);
+    }
+    return content;
   };
 
   return (
@@ -178,7 +187,6 @@ const Preview = ({ version, showVariables }) => {
           <div className="bg-yellow-400 text-xs text-gray-700 px-4 py-2 rounded-t-lg">
             알림톡 도착
           </div>
-          {/* [수정됨] 내용이 길어질 경우 스크롤 기능 추가 */}
           <div className="bg-white p-4 space-y-3 border-l border-r border-gray-200 max-h-96 overflow-y-auto">
             <p className="font-bold text-lg">{version.title}</p>
             <p 
@@ -188,12 +196,12 @@ const Preview = ({ version, showVariables }) => {
           </div>
           {version.buttons && version.buttons.length > 0 && (
              <div className="bg-white p-4 rounded-b-lg border-t border-gray-200 space-y-2">
-                {version.buttons.map((button, index) => (
+                {version.buttons.map((button) => (
                     <button 
-                        key={index} 
+                        key={button.id} 
                         className="w-full text-center py-2 border border-gray-300 rounded-md text-blue-500 font-semibold bg-gray-50 hover:bg-gray-100"
                     >
-                        {button.text}
+                        {button.name}
                     </button>
                 ))}
             </div>
@@ -212,10 +220,21 @@ const Preview = ({ version, showVariables }) => {
 const ChatPanel = ({ messages, onGenerate, onSelectVersion, isLoading }) => {
   const [prompt, setPrompt] = useState('');
   const chatEndRef = useRef(null);
+  const textareaRef = useRef(null); // 입력창 참조를 위한 ref
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // [수정됨] 입력 내용에 따라 textarea 높이를 동적으로 조절하는 로직
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto'; // 높이 초기화
+      textarea.style.height = `${textarea.scrollHeight}px`; // 스크롤 높이만큼 높이 설정
+    }
+  }, [prompt]);
+
 
   const handleGenerateClick = () => {
     if (!prompt.trim() || isLoading) return;
@@ -231,7 +250,7 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion, isLoading }) => {
   };
 
   return (
-    <div className="w-full md:w-96 bg-white flex flex-col h-full border-r border-gray-200">
+    <div className="w-full md:w-[400px] bg-white flex flex-col h-full border-r border-gray-200">
       <div className="flex-1 p-6 space-y-4 overflow-y-auto">
         {messages.map(msg => (
           <div key={msg.id} className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -242,7 +261,7 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion, isLoading }) => {
                     onClick={() => onSelectVersion(msg.versionData)}
                     className="bg-gray-800 text-white px-4 py-2 rounded-full font-bold hover:bg-gray-700 mb-2"
                   >
-                    버전 {msg.versionData.templateId.split('_')[1]} &gt;
+                    버전 {msg.versionData.id} &gt;
                   </button>
                   <p className="text-sm text-gray-700">{msg.text}</p>
                 </div>
@@ -252,33 +271,24 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion, isLoading }) => {
             </div>
           </div>
         ))}
-        {isLoading && (
-          <div className="flex justify-start">
-            <div className="p-3 rounded-lg max-w-xs bg-white border">
-              <p className="text-sm text-gray-800">템플릿을 생성하고 있습니다...</p>
-            </div>
-          </div>
-        )}
         <div ref={chatEndRef} />
       </div>
       <div className="p-4 border-t bg-white">
         <div className="relative">
+          {/* [수정됨] textarea 스타일 및 기능 변경 */}
           <textarea
+            ref={textareaRef}
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             onKeyPress={handleKeyPress}
             rows="1"
-            className="w-full p-3 pr-12 border rounded-full bg-gray-100 focus:ring-2 focus:ring-indigo-500 resize-none"
+            className="w-full p-3 pr-12 border rounded-lg bg-gray-100 focus:ring-2 focus:ring-indigo-500 resize-none max-h-[12rem]"
             placeholder="발송하고 싶은 내용을 입력해주세요"
           />
+          {/* [수정됨] 버튼 위치를 하단에 고정 */}
           <button 
             onClick={handleGenerateClick}
-            disabled={isLoading || !prompt.trim()}
-            className={`absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-2 ${
-              isLoading || !prompt.trim() 
-                ? 'bg-gray-400 cursor-not-allowed' 
-                : 'bg-indigo-600 hover:bg-indigo-700'
-            }`}
+            className="absolute right-3 bottom-3 bg-indigo-600 hover:bg-indigo-700 rounded-full p-2"
           >
             <ArrowUpIcon className="w-5 h-5 text-white" />
           </button>
@@ -295,6 +305,7 @@ export default function GeneratorPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showVariables, setShowVariables] = useState(false);
 
+
   const navigate = useNavigate();
   const { logout, user } = useAuth();
 
@@ -309,7 +320,7 @@ export default function GeneratorPage() {
     logout();
     navigate('/login');
   };
-  
+
   // AI 생성 요청 핸들러
   const handleGenerate = async (prompt) => {
     setIsLoading(true);
@@ -319,13 +330,13 @@ export default function GeneratorPage() {
     try {
       // templateApi.generateTemplate 호출
       const response = await templateApi.generateTemplate(prompt);
-      
+
       if (response) {
         const templateData = response.data;
         
         // API 응답을 기존 구조에 맞게 변환
         const newVersionData = {
-          templateId: templateData.templateId || `TPL_${Date.now()}`,
+          templateId: templateData.id || `TPL_${Date.now()}`,
           title: templateData.title || '생성된 템플릿',
           content: templateData.content || '',
           buttons: templateData.buttons || [],
@@ -335,25 +346,15 @@ export default function GeneratorPage() {
         const botMessage = {
           id: Date.now() + 1,
           type: 'version',
-          text: `'${prompt}' 문구에 대한 카카오 알림톡 템플릿이 성공적으로 생성되었습니다. 총 ${newVersionData.variables.length}개의 변수가 적용되었습니다.`,
+          text: `'${prompt}' 요청에 대한 템플릿이 생성되었습니다. 총 ${newVersionData.variables.length}개의 변수가 적용되었습니다.`,
           versionData: newVersionData
         };
-        
         setMessages(prev => [...prev, botMessage]);
         setSelectedVersion(newVersionData);
-      } else {
-        // API 호출은 성공했지만 응답이 실패인 경우
-        const errorMessage = {
-          id: Date.now() + 1,
-          type: 'bot',
-          text: response.message || '템플릿 생성에 실패했습니다. 다시 시도해주세요.'
-        };
-        setMessages(prev => [...prev, errorMessage]);
       }
+
     } catch (error) {
-      console.error('템플릿 생성 오류 g:', error);
-      console.error(error.response?.data);
-      console.error(error.message);
+      console.error('템플릿 생성 실패:', error);
       const errorMessage = {
         id: Date.now() + 1,
         type: 'bot',
@@ -363,6 +364,52 @@ export default function GeneratorPage() {
     } finally {
       setIsLoading(false);
     }
+
+
+
+
+
+    // AI 응답 시뮬레이션 (새로운 JSON 구조 및 예시 값 추가)
+    setTimeout(() => {
+      const newVersionData = {
+        id: messages.filter(m => m.type === 'version').length + 1,
+        userId: 123,
+        categoryId: "999999",
+        title: "카페 주문 완료 알림",
+        content: "안녕하세요, #{고객명}님.\n\n주문이 완료되었습니다.\n\n주문 내역: #{주문내용}\n\n픽업 예정 시간: #{픽업시간}\n\n문의사항은 #{카페이름} #{전화번호}로 연락 주세요.\n\n감사합니다.\n",
+        imageUrl: null,
+        type: "MESSAGE",
+        buttons: [
+          {
+            id: 1,
+            name: "자세히 보기",
+            ordering: 1,
+            linkPc: "https://example.com",
+            linkAnd: null,
+            linkIos: null
+          }
+        ],
+        variables: [
+          { id: 1, variableKey: "카페이름", placeholder: "#{카페이름}", inputType: "TEXT", sampleValue: "감성커피" },
+          { id: 2, variableKey: "주문내용", placeholder: "#{주문내용}", inputType: "TEXT", sampleValue: "아이스 아메리카노 1잔" },
+          { id: 3, variableKey: "전화번호", placeholder: "#{전화번호}", inputType: "TEXT", sampleValue: "02-1234-5678" },
+          { id: 4, variableKey: "고객명", placeholder: "#{고객명}", inputType: "TEXT", sampleValue: "홍길동" },
+          { id: 5, variableKey: "픽업시간", placeholder: "#{픽업시간}", inputType: "TEXT", sampleValue: "10분 후" }
+        ],
+        industry: [{ id: 9, name: "기타" }],
+        purpose: [{ id: 1, name: "공지/안내" }, { id: 2, name: "예약알림/리마인드" }]
+      };
+
+      const botMessage = {
+        id: Date.now() + 1,
+        type: 'version',
+        text: `'${prompt}' 요청에 대한 템플릿이 생성되었습니다. 총 ${newVersionData.variables.length}개의 변수가 적용되었습니다.`,
+        versionData: newVersionData
+      };
+      setMessages(prev => [...prev, botMessage]);
+      setSelectedVersion(newVersionData);
+      setIsLoading(false);
+    }, 1500);
   };
   
   useEffect(() => {
@@ -378,7 +425,6 @@ export default function GeneratorPage() {
           messages={messages}
           onGenerate={handleGenerate}
           onSelectVersion={setSelectedVersion}
-          isLoading={isLoading}
         />
         <main className="flex-1 flex flex-col bg-gradient-to-br from-blue-100 via-teal-100 to-green-100">
           <header className="flex justify-end items-center p-4">
@@ -389,7 +435,7 @@ export default function GeneratorPage() {
                 <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
               </label>
               <button className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 text-sm font-medium">
-                이 카톡 발송하기
+                이 카톡 승인하기
               </button>
             </div>
           </header>
