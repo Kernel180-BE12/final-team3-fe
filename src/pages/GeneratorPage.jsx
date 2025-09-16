@@ -250,7 +250,7 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion, isLoading }) => {
   };
 
   return (
-    <div className="w-full md:w-[400px] bg-white flex flex-col h-full border-r border-gray-200">
+    <div className="w-full md:w-[600px] bg-white flex flex-col h-full border-r border-gray-200">
       <div className="flex-1 p-6 space-y-4 overflow-y-auto">
         {messages.map(msg => (
           <div key={msg.id} className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -261,7 +261,7 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion, isLoading }) => {
                     onClick={() => onSelectVersion(msg.versionData)}
                     className="bg-gray-800 text-white px-4 py-2 rounded-full font-bold hover:bg-gray-700 mb-2"
                   >
-                    버전 {msg.versionData.id} &gt;
+                     버전 {msg.versionData.templateId} &gt;
                   </button>
                   <p className="text-sm text-gray-700">{msg.text}</p>
                 </div>
@@ -271,6 +271,13 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion, isLoading }) => {
             </div>
           </div>
         ))}
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="p-3 rounded-lg max-w-xs bg-white border">
+              <p className="text-sm text-gray-800">템플릿을 생성하고 있습니다...</p>
+            </div>
+          </div>
+        )}
         <div ref={chatEndRef} />
       </div>
       <div className="p-4 border-t bg-white">
@@ -288,6 +295,7 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion, isLoading }) => {
           {/* [수정됨] 버튼 위치를 하단에 고정 */}
           <button 
             onClick={handleGenerateClick}
+            disabled={isLoading || !prompt.trim()}
             className="absolute right-3 bottom-3 bg-indigo-600 hover:bg-indigo-700 rounded-full p-2"
           >
             <ArrowUpIcon className="w-5 h-5 text-white" />
@@ -364,52 +372,6 @@ export default function GeneratorPage() {
     } finally {
       setIsLoading(false);
     }
-
-
-
-
-
-    // AI 응답 시뮬레이션 (새로운 JSON 구조 및 예시 값 추가)
-    setTimeout(() => {
-      const newVersionData = {
-        id: messages.filter(m => m.type === 'version').length + 1,
-        userId: 123,
-        categoryId: "999999",
-        title: "카페 주문 완료 알림",
-        content: "안녕하세요, #{고객명}님.\n\n주문이 완료되었습니다.\n\n주문 내역: #{주문내용}\n\n픽업 예정 시간: #{픽업시간}\n\n문의사항은 #{카페이름} #{전화번호}로 연락 주세요.\n\n감사합니다.\n",
-        imageUrl: null,
-        type: "MESSAGE",
-        buttons: [
-          {
-            id: 1,
-            name: "자세히 보기",
-            ordering: 1,
-            linkPc: "https://example.com",
-            linkAnd: null,
-            linkIos: null
-          }
-        ],
-        variables: [
-          { id: 1, variableKey: "카페이름", placeholder: "#{카페이름}", inputType: "TEXT", sampleValue: "감성커피" },
-          { id: 2, variableKey: "주문내용", placeholder: "#{주문내용}", inputType: "TEXT", sampleValue: "아이스 아메리카노 1잔" },
-          { id: 3, variableKey: "전화번호", placeholder: "#{전화번호}", inputType: "TEXT", sampleValue: "02-1234-5678" },
-          { id: 4, variableKey: "고객명", placeholder: "#{고객명}", inputType: "TEXT", sampleValue: "홍길동" },
-          { id: 5, variableKey: "픽업시간", placeholder: "#{픽업시간}", inputType: "TEXT", sampleValue: "10분 후" }
-        ],
-        industry: [{ id: 9, name: "기타" }],
-        purpose: [{ id: 1, name: "공지/안내" }, { id: 2, name: "예약알림/리마인드" }]
-      };
-
-      const botMessage = {
-        id: Date.now() + 1,
-        type: 'version',
-        text: `'${prompt}' 요청에 대한 템플릿이 생성되었습니다. 총 ${newVersionData.variables.length}개의 변수가 적용되었습니다.`,
-        versionData: newVersionData
-      };
-      setMessages(prev => [...prev, botMessage]);
-      setSelectedVersion(newVersionData);
-      setIsLoading(false);
-    }, 1500);
   };
   
   useEffect(() => {
@@ -424,7 +386,8 @@ export default function GeneratorPage() {
         <ChatPanel 
           messages={messages}
           onGenerate={handleGenerate}
-          onSelectVersion={setSelectedVersion}
+        onSelectVersion={setSelectedVersion}
+        isLoading={isLoading}
         />
         <main className="flex-1 flex flex-col bg-gradient-to-br from-blue-100 via-teal-100 to-green-100">
           <header className="flex justify-end items-center p-4">
