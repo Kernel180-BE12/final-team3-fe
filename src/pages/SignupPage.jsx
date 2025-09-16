@@ -108,21 +108,17 @@ export default function SignupPage() {
 
       if (response.ok) {
         const result = await response.json();
-        // 서버에서 result.success(true/false) 반환
-        if (result.success) {
-          setIsVerified(true);
-          setVerificationToken(result.data.verificationToken);
-          alert('이메일 인증이 완료되었습니다!');
-        } else {
-          alert('인증 코드가 올바르지 않습니다.');
-        }
+        setIsVerified(true);
+        setVerificationToken(result.data.verificationToken);
+        console.log(response.data.message);
+        alert('이메일 인증이 완료되었습니다!');
       } else {
         alert('인증 코드가 올바르지 않습니다.');
+        console.log(response.data.error);
       }
     } catch (e) {
       alert('인증 확인 중 오류가 발생했습니다.' + e);
     }
-
 
     // 시뮬레이션을 위해 '123456'을 정답으로 가정
     //if (formData.verificationCode === '123456') {
