@@ -105,9 +105,9 @@ export const templateApi = {
         return data;
       }
       
-      throw new Error('템플릿 생성 실패');
+      throw new Error('템플릿 생성 실패 a');
     } catch (error) {
-      console.error('템플릿 생성 오류:', error);
+      console.error('템플릿 생성 오류 a:', error);
       throw error;
     }
   },
