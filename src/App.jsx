@@ -5,6 +5,7 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import DashboardPage from './pages/DashboardPage';
 import GeneratorPage from './pages/GeneratorPage';
+import TemplatesPage from './pages/TemplatesPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -25,9 +26,7 @@ function App() {
         
         <Route path="/templates" element={
           <ProtectedRoute>
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-              <h1 className="text-2xl font-bold text-gray-800">템플릿 관리 페이지 (준비중)</h1>
-            </div>
+            <TemplatesPage />
           </ProtectedRoute>
         } />
         
