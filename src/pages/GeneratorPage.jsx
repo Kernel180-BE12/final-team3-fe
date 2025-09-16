@@ -39,6 +39,11 @@ const MessageSquareIcon = (props) => (
 const ArchiveIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="20" height="5" x="2" y="3" rx="1"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path><path d="M10 12h4"></path></svg>
 );
+// [추가됨] 홈 아이콘 컴포넌트
+const HomeIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+);
+
 
 // --- 1. 사이드바 컴포넌트 ---
 const Sidebar = ({ onLogout, user }) => {
@@ -69,7 +74,17 @@ const Sidebar = ({ onLogout, user }) => {
                 </button>
             </nav>
             {/* 중간 메뉴 */}
-            <nav className="flex flex-col space-y-2 py-4 border-t border-gray-700">
+        <nav className="flex flex-col space-y-2 py-4 border-t border-gray-700">
+          {/* [수정됨] 홈 아이콘 및 링크 추가 */}
+                <div className="relative group flex justify-center">
+                    <a href="/" className="p-3 rounded-lg hover:bg-gray-700 transition-colors">
+                        <HomeIcon className="w-6 h-6 text-gray-400" />
+                    </a>
+                    <div className="absolute left-full ml-4 px-2 py-1 bg-gray-900 text-white text-xs rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                        홈
+                    </div>
+          </div>
+          
                  <div className="relative group flex justify-center">
                     <button className="p-3 rounded-lg hover:bg-gray-700 transition-colors">
                         <MessageSquareIcon className="w-6 h-6 text-gray-400" />
