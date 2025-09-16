@@ -110,11 +110,12 @@ export default function SignupPage() {
         const result = await response.json();
         setIsVerified(true);
         setVerificationToken(result.data.verificationToken);
-        console.log(response.data.message);
+        console.log(response.message);
         alert('이메일 인증이 완료되었습니다!');
       } else {
+        // const data = await response.json();
         alert('인증 코드가 올바르지 않습니다.');
-        console.log(response.data.error);
+        // console.log(data.error.message);
       }
     } catch (e) {
       alert('인증 확인 중 오류가 발생했습니다.' + e);
@@ -158,22 +159,14 @@ export default function SignupPage() {
 
       const data = await response.json();
 
-      if (data.success) {
+      if (response.ok) {
         alert('회원가입이 완료되었습니다!');
         // 회원가입 성공 시 로그인 페이지로 이동
-        console.log('회원가입 성공:', data.data);
+        console.log('회원가입 성공:', data.message);
         navigate('/login');
       } else {
         console.error('회원가입 실패:', data);
-        if (data.fieldErrors) {
-          // 필드별 오류 메시지 표시
-          const errorMessages = Object.entries(data.fieldErrors).map(
-            ([field, message]) => `${field}: ${message}`
-          ).join('\n');
-          alert(`입력값 오류:\n${errorMessages}`);
-        } else {
-          alert(data.message || '회원가입에 실패했습니다.');
-        }
+        alert(data.error.message || '회원가입에 실패했습니다.');
       }
     } catch (error) {
       console.error('회원가입 에러:', error);
