@@ -92,9 +92,9 @@ const Sidebar = ({ onLogout, user }) => {
                     </div>
                 </div>
                  <div className="relative group flex justify-center">
-                    <button className="p-3 rounded-lg hover:bg-gray-700 transition-colors">
+                    <a href="/templates" className="p-3 rounded-lg hover:bg-gray-700 transition-colors">
                         <MessageSquareIcon className="w-6 h-6 text-gray-400" />
-                    </button>
+                    </a>
                     <div className="absolute left-full ml-4 px-2 py-1 bg-gray-900 text-white text-xs rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                         대화 목록
                     </div>
