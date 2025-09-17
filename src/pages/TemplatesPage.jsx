@@ -415,7 +415,7 @@ export default function DashboardPage() {
           </div>
 
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-11 max-w-4xl mx-auto">
             {templates.length > 0 ? (
               templates.map((template) => (
                 <div key={template.id} className="bg-white rounded-lg shadow-md flex flex-col border transform transition duration-300 hover:-translate-y-1">
@@ -434,7 +434,7 @@ export default function DashboardPage() {
                            '요청'}
                       </span>
                   </div>
-                  <div className="p-4 flex-grow">
+                  <div className="p-4 flex-grow bg-[#A9D2F0]">
                       <div className="bg-yellow-400 text-xs text-gray-700 px-3 py-1 rounded-t-md inline-block">
                           알림톡 도착
                       </div>
