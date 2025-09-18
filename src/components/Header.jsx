@@ -71,7 +71,7 @@ const Header = () => {
               // 로그인된 상태
               <>
                 <span className="text-gray-600">
-                  안녕하세요, {user?.nickname}님!
+                  {user?.nickname}
                 </span>
                 <button 
                   onClick={handleLogout}
