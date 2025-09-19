@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { templateApi, logout as apiLogout } from '../utils/api';
 import { useAuth } from '../hooks/useAuth';
+import { parseNestedJsonError } from '../utils/jsonParser';
 
 // --- 헬퍼 아이콘 컴포넌트들 ---
 const ArrowUpIcon = (props) => (
@@ -266,7 +267,7 @@ const ChatPanel = ({ messages, onGenerate, onSelectVersion, isLoading }) => {
                   <p className="text-sm text-gray-700">{msg.text}</p>
                 </div>
               ) : (
-                <p className="text-sm text-gray-800">{msg.text}</p>
+                <p className="text-sm text-gray-800 whitespace-pre-line">{msg.text}</p>
               )}
             </div>
           </div>
@@ -339,7 +340,7 @@ export default function GeneratorPage() {
       // templateApi.generateTemplate 호출
       const response = await templateApi.generateTemplate(prompt);
 
-      if (response) {
+      if (response && response.data) {
         const templateData = response.data;
         
         // API 응답을 기존 구조에 맞게 변환
@@ -360,6 +361,38 @@ export default function GeneratorPage() {
         setMessages(prev => [...prev, botMessage]);
         setSelectedVersion(newVersionData);
       }
+
+      if (response && response.error) {
+        const errorData = response.error;
+        console.log('response: ', response);
+        console.log('errorData: ', errorData);
+
+        // API 에러 응답을 받았을 때 파싱
+        const parsed = parseNestedJsonError(response);
+        
+        if (parsed.success) {
+          console.log('파싱 성공:', parsed.data);
+          const resErrorMessage = parsed.data.detail.error.message;
+          const contextualQuestion = parsed.data.detail.reask_data.contextual_question;
+          //const contextualQuestion = "(아직 확정된 정보가 없습니다)\n\n(아직 확정된 정보가 없습니다)\n\n";
+          console.log('message: ', resErrorMessage);
+          //setResult(parsed.data);
+          console.error('템플릿 생성 실패:', resErrorMessage);
+          
+          const errorMessage = {
+            id: Date.now() + 1,
+            type: 'bot',
+            text: contextualQuestion
+          };
+          setMessages(prev => [...prev, errorMessage]);
+          
+        } else {
+          console.error('파싱 실패:', parsed.error);
+          //alert('데이터 파싱에 실패했습니다: ' + parsed.error);
+        }
+
+      }
+
 
     } catch (error) {
       console.error('템플릿 생성 실패:', error);
