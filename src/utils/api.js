@@ -104,6 +104,11 @@ export const templateApi = {
         const data = await response.json();
         return data;
       }
+
+      if (response && !response.ok) {
+        const data = await response.json();
+        return data;
+      }
       
       throw new Error('템플릿 생성 실패 a');
     } catch (error) {
