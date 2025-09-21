@@ -30,6 +30,10 @@ dist-ssr
 .env.test.local
 .env.production.local
 
+# 모든 환경변수 파일 제외
+.env*
+!.env.example
+
 # Cache directories
 .cache
 .parcel-cache
