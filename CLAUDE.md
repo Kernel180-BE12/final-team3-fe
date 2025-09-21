@@ -44,13 +44,15 @@ src/
 ├── pages/                      # Page components
 │   ├── LandingPage.jsx         # Public landing page
 │   ├── LoginPage.jsx           # User authentication
-│   ├── SignUpPage.jsx          # User registration
+│   ├── SignupPage.jsx          # User registration (note: actual file is SignupPage.jsx)
 │   ├── DashboardPage.jsx       # User dashboard
-│   └── GeneratorPage.jsx       # AI template generator (main feature)
+│   ├── GeneratorPage.jsx       # AI template generator (main feature)
+│   └── TemplatesPage.jsx       # Template management page
 ├── hooks/                      # Custom React hooks
 │   └── useAuth.js              # Authentication logic
 └── utils/                      # Utility functions
-    └── api.js                  # API communication helpers
+    ├── api.js                  # API communication helpers
+    └── jsonParser.js           # JSON parsing utilities for error handling
 ```
 
 ## Key Features
@@ -67,6 +69,17 @@ src/
 2. **Authentication** (`/login`, `/signup`) - User registration and login
 3. **Dashboard** (`/dashboard`) - Protected user dashboard
 4. **Template Generator** (`/create`) - AI-powered template creation tool
-5. **Template Management** (`/templates`) - Template storage and management (in development)
+5. **Template Management** (`/templates`) - Template storage and management
 
-The application uses ES modules (`"type": "module"` in package.json) and modern JavaScript features.
+## Development Configuration
+
+- **Path Alias**: `@` is configured to point to `src/` directory in Vite config
+- **Server**: Development server runs on `localhost:5173` with auto-open browser
+- **ESLint**: Custom configuration with React hooks and refresh plugins
+- **Module System**: Uses ES modules (`"type": "module"` in package.json)
+
+## Korean Development Environment
+
+- Comments and user-facing messages use Korean (한국어)
+- HMR (Hot Module Replacement) is properly configured for localhost
+- Error handling includes Korean error messages in `jsonParser.js`
