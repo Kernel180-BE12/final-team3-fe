@@ -70,7 +70,7 @@ export default function SignupPage() {
     try {
       // 실제 API 연동
       const response = await fetch(
-        "http://54.116.0.21:8080/api/auth/email/otp/request",
+        `${import.meta.env.VITE_API_URL}/auth/email/otp/request`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -99,7 +99,7 @@ export default function SignupPage() {
     try {
       // 실제 API 연동
       const response = await fetch(
-        "http://54.116.0.21:8080/api/auth/email/otp/verify",
+        `${import.meta.env.VITE_API_URL}/auth/email/otp/verify`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -147,7 +147,7 @@ export default function SignupPage() {
     console.log("이메일로 회원가입 시도:", formData);
 
     try {
-      const response = await fetch("http://54.116.0.21:8080/api/auth/signup", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
