@@ -17,7 +17,7 @@ export default defineConfig({
   server: {
     host: 'localhost',
     port: 5173,
-    open: true,  // 브라우저 자동 열기
+    open: false,  // 브라우저 자동 열기
     hmr: {
       host: 'localhost',
       port: 5173  // HMR 포트도 명시적으로 지정
