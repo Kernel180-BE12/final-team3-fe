@@ -1,6 +1,6 @@
 // API 요청을 위한 유틸리티 함수
 
-const API_BASE_URL = 'http://localhost:8580/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
 
 // 토큰을 포함한 헤더를 자동으로 생성하는 함수
 const getAuthHeaders = () => {
@@ -70,7 +70,8 @@ export const api = {
 // 로그아웃 API 호출 (토큰 포함)
 export const logout = async () => {
   try {
-    const url = 'http://localhost:8580/auth/logout';
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+    const url = `${apiUrl}/auth/logout`;
     const response = await fetch(url, {
       method: 'POST',
       headers: getAuthHeaders(),
