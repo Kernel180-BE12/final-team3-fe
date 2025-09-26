@@ -1,0 +1,86 @@
+{
+  "rejectionReasons": [
+    {
+      "reason": "광고성 내용 포함",
+      "count": 45,
+      "percentage": 35.2,
+      "description": "프로모션, 할인 등 광고성 표현이 포함된 경우",
+      "examples": ["최대 70% 할인", "지금 바로 구매하세요", "한정 특가"]
+    },
+    {
+      "reason": "개인정보 수집 명시 부족",
+      "count": 28,
+      "percentage": 21.9,
+      "description": "개인정보 수집 및 이용에 대한 명시가 부족한 경우",
+      "examples": ["개인정보 수집 동의 문구 누락", "수집 목적 불명확"]
+    },
+    {
+      "reason": "템플릿 형식 오류",
+      "count": 25,
+      "percentage": 19.5,
+      "description": "KakaoTalk 알림톡 템플릿 형식에 맞지 않는 경우",
+      "examples": ["변수 형식 오류", "버튼 개수 초과", "텍스트 길이 초과"]
+    },
+    {
+      "reason": "부적절한 표현",
+      "count": 18,
+      "percentage": 14.1,
+      "description": "폭력적, 선정적, 차별적 표현이 포함된 경우",
+      "examples": ["욕설 포함", "성적 표현", "차별적 언어"]
+    },
+    {
+      "reason": "허위/과장 정보",
+      "count": 8,
+      "percentage": 6.3,
+      "description": "사실과 다르거나 과장된 정보가 포함된 경우",
+      "examples": ["허위 할인율", "과장된 효과", "거짓 정보"]
+    },
+    {
+      "reason": "기타",
+      "count": 4,
+      "percentage": 3.1,
+      "description": "기타 정책 위반 사항",
+      "examples": ["정책 변경사항 위반", "기타 가이드라인 위반"]
+    }
+  ],
+  "monthlyTrends": [
+    { "month": "2024-06", "total": 32, "advertising": 12, "privacy": 8, "format": 7, "inappropriate": 3, "false": 1, "other": 1 },
+    { "month": "2024-07", "total": 38, "advertising": 15, "privacy": 9, "format": 8, "inappropriate": 4, "false": 1, "other": 1 },
+    { "month": "2024-08", "total": 35, "advertising": 11, "privacy": 8, "format": 6, "inappropriate": 7, "false": 2, "other": 1 },
+    { "month": "2024-09", "total": 23, "advertising": 7, "privacy": 3, "format": 4, "inappropriate": 4, "false": 4, "other": 1 }
+  ],
+  "categoryBreakdown": {
+    "주문/배송 알림": {
+      "total": 5,
+      "reasons": {
+        "개인정보 수집 명시 부족": 3,
+        "템플릿 형식 오류": 2
+      }
+    },
+    "시스템 알림": {
+      "total": 8,
+      "reasons": {
+        "템플릿 형식 오류": 5,
+        "부적절한 표현": 2,
+        "기타": 1
+      }
+    },
+    "고객 서비스": {
+      "total": 13,
+      "reasons": {
+        "개인정보 수집 명시 부족": 8,
+        "템플릿 형식 오류": 3,
+        "부적절한 표현": 2
+      }
+    },
+    "프로모션/마케팅": {
+      "total": 26,
+      "reasons": {
+        "광고성 내용 포함": 15,
+        "허위/과장 정보": 6,
+        "템플릿 형식 오류": 3,
+        "부적절한 표현": 2
+      }
+    }
+  }
+}

@@ -95,9 +95,9 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* 발송 통계 카드 - 아직 페이지가 없으므로 알림 표시 */}
+              {/* 템플릿 통계 카드 */}
               <div
-                onClick={() => alert('발송 통계 페이지는 개발 중입니다. 곧 제공될 예정입니다!')}
+                onClick={() => navigate('/statistics')}
                 className="bg-white overflow-hidden shadow rounded-lg cursor-pointer transform transition-all duration-200 hover:scale-105 hover:shadow-lg"
               >
                 <div className="p-5">
@@ -112,10 +112,10 @@ export default function DashboardPage() {
                     <div className="ml-5 w-0 flex-1">
                       <dl>
                         <dt className="text-sm font-medium text-gray-500 truncate">
-                          발송 내역
+                          템플릿 통계
                         </dt>
                         <dd className="text-lg font-medium text-gray-900">
-                          발송 통계 확인
+                          승인 현황 분석
                         </dd>
                       </dl>
                     </div>
@@ -124,7 +124,7 @@ export default function DashboardPage() {
                 <div className="bg-gray-50 px-5 py-3">
                   <div className="text-sm">
                     <span className="font-medium text-yellow-700">
-                      확인하기 →
+                      분석하기 →
                     </span>
                   </div>
                 </div>

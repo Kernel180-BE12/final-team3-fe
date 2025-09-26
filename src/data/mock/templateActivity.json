@@ -1,0 +1,196 @@
+{
+  "recentActivity": [
+    {
+      "id": "act_001",
+      "templateId": "tpl_298",
+      "templateName": "주문 확인 알림 v2.1",
+      "category": "주문/배송 알림",
+      "previousStatus": "APPROVE_REQUESTED",
+      "currentStatus": "APPROVED",
+      "timestamp": "2024-09-26T14:32:15Z",
+      "processedBy": "카카오 검토팀",
+      "reason": null,
+      "duration": "2일 5시간"
+    },
+    {
+      "id": "act_002",
+      "templateId": "tpl_297",
+      "templateName": "신년 특가 이벤트 알림",
+      "category": "프로모션/마케팅",
+      "previousStatus": "APPROVE_REQUESTED",
+      "currentStatus": "REJECTED",
+      "timestamp": "2024-09-26T13:18:42Z",
+      "processedBy": "카카오 검토팀",
+      "reason": "광고성 내용 포함 - 과도한 할인 강조 표현",
+      "duration": "1일 14시간"
+    },
+    {
+      "id": "act_003",
+      "templateId": "tpl_296",
+      "templateName": "회원가입 환영 메시지",
+      "category": "고객 서비스",
+      "previousStatus": "CREATED",
+      "currentStatus": "APPROVE_REQUESTED",
+      "timestamp": "2024-09-26T12:45:33Z",
+      "processedBy": "관리자",
+      "reason": null,
+      "duration": null
+    },
+    {
+      "id": "act_004",
+      "templateId": "tpl_295",
+      "templateName": "결제 실패 알림",
+      "category": "시스템 알림",
+      "previousStatus": "APPROVE_REQUESTED",
+      "currentStatus": "APPROVED",
+      "timestamp": "2024-09-26T11:22:17Z",
+      "processedBy": "카카오 검토팀",
+      "reason": null,
+      "duration": "3일 2시간"
+    },
+    {
+      "id": "act_005",
+      "templateId": "tpl_294",
+      "templateName": "배송 완료 안내",
+      "category": "주문/배송 알림",
+      "previousStatus": "REJECTED",
+      "currentStatus": "APPROVE_REQUESTED",
+      "timestamp": "2024-09-26T10:15:28Z",
+      "processedBy": "관리자",
+      "reason": "개인정보 수집 동의 문구 추가 후 재요청",
+      "duration": null
+    },
+    {
+      "id": "act_006",
+      "templateId": "tpl_293",
+      "templateName": "비밀번호 변경 확인",
+      "category": "시스템 알림",
+      "previousStatus": "APPROVE_REQUESTED",
+      "currentStatus": "APPROVED",
+      "timestamp": "2024-09-26T09:33:51Z",
+      "processedBy": "카카오 검토팀",
+      "reason": null,
+      "duration": "1일 8시간"
+    },
+    {
+      "id": "act_007",
+      "templateId": "tpl_292",
+      "templateName": "멤버십 혜택 안내",
+      "category": "프로모션/마케팅",
+      "previousStatus": "CREATED",
+      "currentStatus": "DELETED",
+      "timestamp": "2024-09-26T08:47:12Z",
+      "processedBy": "관리자",
+      "reason": "중복 템플릿으로 인한 삭제",
+      "duration": null
+    },
+    {
+      "id": "act_008",
+      "templateId": "tpl_291",
+      "templateName": "예약 취소 안내",
+      "category": "고객 서비스",
+      "previousStatus": "APPROVE_REQUESTED",
+      "currentStatus": "REJECTED",
+      "timestamp": "2024-09-25T16:21:45Z",
+      "processedBy": "카카오 검토팀",
+      "reason": "템플릿 형식 오류 - 변수 형식 불일치",
+      "duration": "4일 1시간"
+    },
+    {
+      "id": "act_009",
+      "templateId": "tpl_290",
+      "templateName": "포인트 적립 알림",
+      "category": "시스템 알림",
+      "previousStatus": "CREATED",
+      "currentStatus": "APPROVE_REQUESTED",
+      "timestamp": "2024-09-25T15:34:29Z",
+      "processedBy": "관리자",
+      "reason": null,
+      "duration": null
+    },
+    {
+      "id": "act_010",
+      "templateId": "tpl_289",
+      "templateName": "주간 리포트 발송",
+      "category": "시스템 알림",
+      "previousStatus": "APPROVE_REQUESTED",
+      "currentStatus": "APPROVED",
+      "timestamp": "2024-09-25T14:18:07Z",
+      "processedBy": "카카오 검토팀",
+      "reason": null,
+      "duration": "2일 11시간"
+    },
+    {
+      "id": "act_011",
+      "templateId": "tpl_288",
+      "templateName": "할인 쿠폰 발급",
+      "category": "프로모션/마케팅",
+      "previousStatus": "REJECTED",
+      "currentStatus": "APPROVE_REQUESTED",
+      "timestamp": "2024-09-25T13:42:33Z",
+      "processedBy": "관리자",
+      "reason": "광고성 표현 수정 후 재요청",
+      "duration": null
+    },
+    {
+      "id": "act_012",
+      "templateId": "tpl_287",
+      "templateName": "서비스 점검 안내",
+      "category": "시스템 알림",
+      "previousStatus": "CREATED",
+      "currentStatus": "APPROVE_REQUESTED",
+      "timestamp": "2024-09-25T12:28:14Z",
+      "processedBy": "관리자",
+      "reason": null,
+      "duration": null
+    },
+    {
+      "id": "act_013",
+      "templateId": "tpl_286",
+      "templateName": "주문 취소 확인",
+      "category": "주문/배송 알림",
+      "previousStatus": "APPROVE_REQUESTED",
+      "currentStatus": "APPROVED",
+      "timestamp": "2024-09-25T11:15:52Z",
+      "processedBy": "카카오 검토팀",
+      "reason": null,
+      "duration": "1일 16시간"
+    },
+    {
+      "id": "act_014",
+      "templateId": "tpl_285",
+      "templateName": "이벤트 참여 감사 메시지",
+      "category": "고객 서비스",
+      "previousStatus": "CREATED",
+      "currentStatus": "DELETED",
+      "timestamp": "2024-09-25T10:03:41Z",
+      "processedBy": "관리자",
+      "reason": "사용자 요청에 의한 삭제",
+      "duration": null
+    },
+    {
+      "id": "act_015",
+      "templateId": "tpl_284",
+      "templateName": "앱 업데이트 알림",
+      "category": "시스템 알림",
+      "previousStatus": "APPROVE_REQUESTED",
+      "currentStatus": "REJECTED",
+      "timestamp": "2024-09-24T17:45:26Z",
+      "processedBy": "카카오 검토팀",
+      "reason": "부적절한 표현 - 강제성 표현 사용",
+      "duration": "3일 7시간"
+    }
+  ],
+  "activitySummary": {
+    "totalEvents": 15,
+    "statusChanges": {
+      "APPROVED": 6,
+      "REJECTED": 3,
+      "APPROVE_REQUESTED": 4,
+      "DELETED": 2
+    },
+    "averageProcessingTime": "2일 8시간",
+    "todayActivity": 7,
+    "thisWeekActivity": 15
+  }
+}

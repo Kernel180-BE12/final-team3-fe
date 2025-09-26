@@ -38,9 +38,13 @@
       "Bash(timeout:*)",
       "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee\\src\\main\\java\\com\\ezlevup\\jober\\controller/**)",
       "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee/**)",
-      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee/**)"
+      "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee/**)",
+      "Bash(node:*)",
+      "WebFetch(domain:localhost)",
+      "Bash(mkdir:*)"
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "outputStyle": "Korean Developer"
 }
