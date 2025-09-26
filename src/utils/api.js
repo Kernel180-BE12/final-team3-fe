@@ -30,22 +30,53 @@ const apiRequest = async (endpoint, options = {}) => {
       ...options.headers,
     },
   };
-  
+
+  // Request 로깅
+  console.log('API 요청 시작:', {
+    url: url,
+    method: config.method || 'GET',
+    headers: config.headers,
+    body: config.body ? JSON.parse(config.body) : null
+  });
+
   try {
     const response = await fetch(url, config);
-    
+
+    // Response 로깅 (응답 데이터 복사)
+    const responseClone = response.clone();
+    let responseData = null;
+
+    try {
+      responseData = await responseClone.json();
+    } catch (e) {
+      responseData = await responseClone.text();
+    }
+
+    console.log('API 응답 수신:', {
+      url: url,
+      status: response.status,
+      statusText: response.statusText,
+      headers: Object.fromEntries(response.headers.entries()),
+      data: responseData
+    });
+
     // 401 Unauthorized 처리
     if (response.status === 401) {
       // 토큰이 만료되었거나 유효하지 않음
+      console.warn('인증 토큰 만료 - 로그인 페이지로 리다이렉트');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/login';
       return null;
     }
-    
+
     return response;
   } catch (error) {
-    console.error('API 요청 오류:', error);
+    console.error('API 요청 오류:', {
+      url: url,
+      error: error.message,
+      stack: error.stack
+    });
     throw error;
   }
 };
@@ -72,20 +103,48 @@ export const logout = async () => {
   try {
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
     const url = `${apiUrl}/auth/logout`;
+    const requestBody = {
+      refreshToken: localStorage.getItem('refreshToken') // 또는 적절한 refresh token
+    };
+
+    // Request 로깅
+    console.log('로그아웃 API 요청 시작:', {
+      url: url,
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: requestBody
+    });
+
     const response = await fetch(url, {
       method: 'POST',
       headers: getAuthHeaders(),
-      body: JSON.stringify({
-                refreshToken: localStorage.getItem('refreshToken') // 또는 적절한 refresh token
-            })
+      body: JSON.stringify(requestBody)
     });
+
+    let data = null;
     if (response) {
-      const data = await response.json();
+      data = await response.json();
+
+      // Response 로깅
+      console.log('로그아웃 API 응답 수신:', {
+        url: url,
+        status: response.status,
+        statusText: response.statusText,
+        headers: Object.fromEntries(response.headers.entries()),
+        data: data
+      });
+
       return data;
     }
+
+    console.warn('로그아웃 API 응답 없음');
     return { success: false };
   } catch (error) {
-    console.error('로그아웃 오류:', error);
+    console.error('로그아웃 오류:', {
+      url: `${import.meta.env.VITE_API_URL || 'http://localhost:8080/api'}/auth/logout`,
+      error: error.message,
+      stack: error.stack
+    });
     return { success: false };
   }
 };
@@ -122,15 +181,37 @@ export const templateApi = {
   getMyTemplates: async () => {
     try {
       const response = await api.get('/templates/my');
-      
+
       if (response && response.ok) {
         const data = await response.json();
         return data;
       }
-      
+
       throw new Error('템플릿 목록 조회 실패');
     } catch (error) {
       console.error('템플릿 목록 조회 오류:', error);
+      throw error;
+    }
+  },
+
+  // 템플릿 승인 요청
+  approveTemplate: async (templateId) => {
+    try {
+      const response = await api.post(`/templates/${templateId}/approve-request`);
+
+      if (response && response.ok) {
+        const data = await response.json();
+        return data;
+      }
+
+      if (response && !response.ok) {
+        const data = await response.json();
+        return data;
+      }
+
+      throw new Error('템플릿 승인 요청 실패');
+    } catch (error) {
+      console.error('템플릿 승인 요청 오류:', error);
       throw error;
     }
   }
