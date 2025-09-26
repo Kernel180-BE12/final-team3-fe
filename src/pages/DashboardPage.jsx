@@ -1,8 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from "@/components/Footer";
 
 export default function DashboardPage() {
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -23,7 +25,11 @@ export default function DashboardPage() {
 
             {/* 기능 카드들 */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              <div className="bg-white overflow-hidden shadow rounded-lg cursor-pointer transform transition-all duration-200 hover:scale-105 hover:shadow-lg">
+              {/* AI 메시지 생성 카드 */}
+              <div
+                onClick={() => navigate('/create')}
+                className="bg-white overflow-hidden shadow rounded-lg cursor-pointer transform transition-all duration-200 hover:scale-105 hover:shadow-lg"
+              >
                 <div className="p-5">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
@@ -47,14 +53,18 @@ export default function DashboardPage() {
                 </div>
                 <div className="bg-gray-50 px-5 py-3">
                   <div className="text-sm">
-                    <button className="font-medium text-indigo-700 hover:text-indigo-900">
+                    <span className="font-medium text-indigo-700">
                       시작하기 →
-                    </button>
+                    </span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white overflow-hidden shadow rounded-lg cursor-pointer transform transition-all duration-200 hover:scale-105 hover:shadow-lg">
+              {/* 템플릿 관리 카드 */}
+              <div
+                onClick={() => navigate('/templates')}
+                className="bg-white overflow-hidden shadow rounded-lg cursor-pointer transform transition-all duration-200 hover:scale-105 hover:shadow-lg"
+              >
                 <div className="p-5">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
@@ -78,14 +88,18 @@ export default function DashboardPage() {
                 </div>
                 <div className="bg-gray-50 px-5 py-3">
                   <div className="text-sm">
-                    <button className="font-medium text-green-700 hover:text-green-900">
+                    <span className="font-medium text-green-700">
                       관리하기 →
-                    </button>
+                    </span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white overflow-hidden shadow rounded-lg cursor-pointer transform transition-all duration-200 hover:scale-105 hover:shadow-lg">
+              {/* 발송 통계 카드 - 아직 페이지가 없으므로 알림 표시 */}
+              <div
+                onClick={() => alert('발송 통계 페이지는 개발 중입니다. 곧 제공될 예정입니다!')}
+                className="bg-white overflow-hidden shadow rounded-lg cursor-pointer transform transition-all duration-200 hover:scale-105 hover:shadow-lg"
+              >
                 <div className="p-5">
                   <div className="flex items-center">
                     <div className="flex-shrink-0">
@@ -109,9 +123,9 @@ export default function DashboardPage() {
                 </div>
                 <div className="bg-gray-50 px-5 py-3">
                   <div className="text-sm">
-                    <button className="font-medium text-yellow-700 hover:text-yellow-900">
+                    <span className="font-medium text-yellow-700">
                       확인하기 →
-                    </button>
+                    </span>
                   </div>
                 </div>
               </div>
