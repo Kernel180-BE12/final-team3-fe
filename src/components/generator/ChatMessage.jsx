@@ -1,6 +1,37 @@
 import React from 'react';
 
 const ChatMessage = ({ message, onSelectVersion }) => {
+  // 에러 메시지인 경우 별도 스타일 적용
+  if (message.type === "error") {
+    return (
+      <div className="flex justify-start mb-6">
+        <div className="max-w-[70%] bg-red-50 border border-red-200 rounded-2xl rounded-bl-md px-4 py-3 shadow-sm">
+          <div className="flex items-start space-x-3">
+            {/* 에러 아이콘 */}
+            <svg
+              className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <div>
+              <p className="text-red-800 text-sm font-medium mb-1">오류가 발생했습니다</p>
+              <p className="text-red-700 text-sm leading-relaxed">{message.text}</p>
+              <p className="text-red-600 text-xs mt-2">다시 시도하거나 다른 방식으로 요청해보세요.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`flex ${

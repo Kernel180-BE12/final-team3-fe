@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { templateApi, logout as apiLogout } from "../utils/api";
 import { useAuth } from "../hooks/useAuth";
-import { parseNestedJsonError } from "../utils/jsonParser";
 
 // 새로운 컴포넌트들 import
 import MainChatLayout from "@/components/generator/MainChatLayout";
@@ -457,6 +456,32 @@ export default function GeneratorPageV2() {
     try {
       const response = await templateApi.generateTemplate(prompt);
 
+      // HTTP 상태 코드가 200이 아닌 경우 에러 처리
+      if (response && response.status && response.status !== 200) {
+        const errorMessage = response.error?.message || `서버 오류가 발생했습니다. (상태코드: ${response.status})`;
+
+        const botErrorMessage = {
+          id: Date.now() + 1,
+          type: "error",
+          text: errorMessage,
+        };
+        setMessages((prev) => [...prev, botErrorMessage]);
+        return;
+      }
+
+      // 응답에 error 필드가 있는 경우 (상태코드와 별도로 에러 정보가 포함된 경우)
+      if (response && response.error) {
+        const errorMessage = response.error.message || "알 수 없는 오류가 발생했습니다.";
+
+        const botErrorMessage = {
+          id: Date.now() + 1,
+          type: "error",
+          text: errorMessage,
+        };
+        setMessages((prev) => [...prev, botErrorMessage]);
+        return;
+      }
+
       if (response && response.data) {
         const templateData = response.data;
 
@@ -477,33 +502,11 @@ export default function GeneratorPageV2() {
         setMessages((prev) => [...prev, botMessage]);
         setSelectedVersion(newVersionData);
       }
-
-      if (response && response.error) {
-        const parsed = parseNestedJsonError(response);
-
-        if (parsed.success) {
-          console.log("파싱 성공:", parsed.data);
-          const resErrorMessage = parsed.data.detail.error.message;
-          const contextualQuestion =
-            parsed.data.detail.reask_data.contextual_question;
-          console.log("message: ", resErrorMessage);
-          console.error("템플릿 생성 실패:", resErrorMessage);
-
-          const errorMessage = {
-            id: Date.now() + 1,
-            type: "bot",
-            text: contextualQuestion,
-          };
-          setMessages((prev) => [...prev, errorMessage]);
-        } else {
-          console.error("파싱 실패:", parsed.error);
-        }
-      }
     } catch (error) {
       console.error("템플릿 생성 실패:", error);
       const errorMessage = {
         id: Date.now() + 1,
-        type: "bot",
+        type: "error",
         text: "템플릿 생성 중 오류가 발생했습니다. 네트워크 연결을 확인하고 다시 시도해주세요.",
       };
       setMessages((prev) => [...prev, errorMessage]);
