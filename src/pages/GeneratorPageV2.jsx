@@ -367,7 +367,7 @@ export default function GeneratorPageV2() {
   const [selectedVersion, setSelectedVersion] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showVariables, setShowVariables] = useState(false);
-  const [layoutMode, setLayoutMode] = useState('chat'); // 'chat' | 'template'
+  const [layoutMode, setLayoutMode] = useState("chat"); // 'chat' | 'template'
   const [hasGeneratedTemplate, setHasGeneratedTemplate] = useState(false);
 
   const navigate = useNavigate();
@@ -376,7 +376,7 @@ export default function GeneratorPageV2() {
   // 템플릿이 생성되면 3패널 모드로 전환
   useEffect(() => {
     if (selectedVersion && !hasGeneratedTemplate) {
-      setLayoutMode('template');
+      setLayoutMode("template");
       setHasGeneratedTemplate(true);
     }
   }, [selectedVersion, hasGeneratedTemplate]);
@@ -405,11 +405,12 @@ export default function GeneratorPageV2() {
         selectedVersion.templateId
       );
 
-      if (response && response.data.status === "APPROVE_REQUESTED") {
+      if (response?.data?.status === "APPROVE_REQUESTED") {
         alert("템플릿 승인 요청이 완료되었습니다.");
       } else {
         console.error("템플릿 승인 요청 실패:", response);
-        const errorMessage = response.error.message;
+        const errorMessage =
+          response?.error?.message || "알 수 없는 오류가 발생했습니다.";
         alert(errorMessage);
       }
     } catch (error) {
@@ -497,7 +498,7 @@ export default function GeneratorPageV2() {
     <div className="flex h-screen w-full bg-white overflow-hidden">
       <Sidebar onLogout={handleLogout} user={user} />
 
-      {layoutMode === 'chat' ? (
+      {layoutMode === "chat" ? (
         // 2패널 레이아웃: 사이드 + 메인 채팅
         <MainChatLayout
           messages={messages}
