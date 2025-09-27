@@ -316,12 +316,12 @@ const Sidebar = ({ onLogout, user }) => {
             </div>
             <div className="border-t border-gray-700 my-1"></div>
             <div className="p-2">
-              <a
-                href="#"
-                className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700"
+              <button
+                onClick={() => navigate('/pricing')}
+                className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700 text-left"
               >
                 <SparklesIcon className="mr-3" /> <span>플랜 업그레이드</span>
-              </a>
+              </button>
               <a
                 href="#"
                 className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700"

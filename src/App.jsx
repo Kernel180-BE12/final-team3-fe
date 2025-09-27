@@ -8,6 +8,7 @@ import GeneratorPage from "./pages/GeneratorPage";
 import GeneratorPageV2 from "./pages/GeneratorPageV2";
 import TemplatesPage from "./pages/TemplatesPage";
 import StatisticsPage from "./pages/StatisticsPage";
+import PricingPage from "./pages/PricingPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import "./App.css";
@@ -63,6 +64,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <StatisticsPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/pricing"
+            element={
+              <ProtectedRoute>
+                <PricingPage />
               </ProtectedRoute>
             }
           />

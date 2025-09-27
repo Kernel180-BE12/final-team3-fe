@@ -41,7 +41,10 @@
       "Read(C:\\workdir\\github-space-cap\\final-team3-be-lee/**)",
       "Bash(node:*)",
       "WebFetch(domain:localhost)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(npm run lint:*)",
+      "WebFetch(domain:claude.ai)",
+      "Bash(xargs ls:*)"
     ],
     "deny": [],
     "ask": []
