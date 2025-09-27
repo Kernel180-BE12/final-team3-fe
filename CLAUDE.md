@@ -40,14 +40,40 @@ src/
 ├── components/                 # Reusable UI components
 │   ├── Header.jsx              # Navigation header
 │   ├── Footer.jsx              # Page footer
-│   └── ProtectedRoute.jsx      # Route protection wrapper
+│   ├── ProtectedRoute.jsx      # Route protection wrapper
+│   ├── ActivityItem.jsx        # Activity item component
+│   ├── RecentActivity.jsx      # Recent activity display
+│   ├── generator/              # Template generator components
+│   │   ├── ChatInput.jsx       # Chat input component
+│   │   ├── ChatMessage.jsx     # Chat message display
+│   │   ├── MainChatLayout.jsx  # Main chat layout
+│   │   ├── ThreePanelLayout.jsx # Three-panel layout
+│   │   └── WelcomeSection.jsx  # Welcome section
+│   ├── pricing/                # Pricing page components
+│   │   ├── BackButton.jsx      # Back navigation button
+│   │   ├── PricingCard.jsx     # Individual pricing card
+│   │   └── PricingCards.jsx    # Pricing cards container
+│   └── statistics/             # Statistics components
+│       ├── ApprovalTrendChart.jsx     # Approval trend chart
+│       ├── KPICards.jsx               # KPI cards display
+│       └── StatusDistributionChart.jsx # Status distribution chart
 ├── pages/                      # Page components
 │   ├── LandingPage.jsx         # Public landing page
 │   ├── LoginPage.jsx           # User authentication
-│   ├── SignupPage.jsx          # User registration (note: actual file is SignupPage.jsx)
+│   ├── SignupPage.jsx          # User registration
 │   ├── DashboardPage.jsx       # User dashboard
-│   ├── GeneratorPage.jsx       # AI template generator (main feature)
+│   ├── GeneratorPage.jsx       # AI template generator (original)
+│   ├── GeneratorPageV2.jsx     # AI template generator (main feature)
+│   ├── PricingPage.jsx         # Plan upgrade pricing page
+│   ├── StatisticsPage.jsx      # Template approval statistics
 │   └── TemplatesPage.jsx       # Template management page
+├── data/                       # Data and configuration
+│   ├── plans.js                # Pricing plans configuration
+│   ├── sampleActivities.js     # Sample activity data
+│   └── mock/                   # Mock data files
+│       ├── rejectionReasons.json      # Mock rejection reasons
+│       ├── templateActivity.json      # Mock template activity
+│       └── templateStatistics.json    # Mock statistics data
 ├── hooks/                      # Custom React hooks
 │   └── useAuth.js              # Authentication logic
 └── utils/                      # Utility functions
@@ -57,19 +83,25 @@ src/
 
 ## Key Features
 
-- **AI Template Generator**: Main feature for creating KakaoTalk notification templates
-- **User Authentication**: Login/signup with protected routes
-- **Template Preview**: Real-time preview of generated templates
-- **Variable System**: Dynamic template variables with sample values
-- **Responsive Design**: Mobile-friendly UI with Tailwind CSS
+- **AI Template Generator**: Main feature for creating KakaoTalk notification templates with chat interface
+- **User Authentication**: Login/signup with protected routes and session management
+- **Template Preview**: Real-time preview of generated templates with variable system
+- **Template Management**: Create, view, approve, and manage templates with status tracking
+- **Plan Upgrade System**: Three-tier pricing (Free/Pro/Max) with feature comparison
+- **Statistics Dashboard**: Template approval analytics with charts and KPI tracking
+- **Duplicate Prevention**: Smart approval system preventing multiple submissions
+- **Error Handling**: Comprehensive error display with user-friendly messages
+- **Responsive Design**: Mobile-friendly UI with Tailwind CSS and modern components
 
 ## Application Flow
 
 1. **Landing Page** (`/`) - Public homepage
 2. **Authentication** (`/login`, `/signup`) - User registration and login
 3. **Dashboard** (`/dashboard`) - Protected user dashboard
-4. **Template Generator** (`/create`) - AI-powered template creation tool
+4. **Template Generator** (`/create`) - AI-powered template creation tool (GeneratorPageV2)
 5. **Template Management** (`/templates`) - Template storage and management
+6. **Plan Upgrade** (`/pricing`) - Pricing plans and subscription management
+7. **Statistics** (`/statistics`) - Template approval statistics and analytics
 
 ## Development Configuration
 

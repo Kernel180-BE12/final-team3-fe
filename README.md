@@ -8,11 +8,15 @@
 
 ### 주요 기능
 
-- **AI 템플릿 생성**: 간단한 정보 입력으로 최적화된 알림톡 템플릿 자동 생성
+- **AI 템플릿 생성**: 채팅 인터페이스를 통한 AI 기반 알림톡 템플릿 자동 생성
 - **사용자 인증**: 이메일 기반 회원가입 및 로그인 (이메일 인증 포함)
-- **실시간 미리보기**: 생성된 템플릿의 실시간 프리뷰 제공
-- **템플릿 관리**: 생성한 템플릿 저장 및 관리
-- **반응형 디자인**: 모바일과 데스크톱 모든 환경에서 최적화된 UI
+- **실시간 미리보기**: 생성된 템플릿의 실시간 프리뷰 및 변수 시스템
+- **템플릿 관리**: 생성, 조회, 승인, 관리 및 상태 추적
+- **플랜 업그레이드**: 3단계 요금제 (Free/Pro/Max) 및 기능 비교
+- **통계 대시보드**: 템플릿 승인 분석 및 KPI 추적 차트
+- **중복 방지**: 스마트 승인 시스템으로 중복 제출 방지
+- **에러 핸들링**: 포괄적 에러 표시 및 사용자 친화적 메시지
+- **반응형 디자인**: 모바일과 데스크톱 모든 환경에서 최적화된 현대적 UI
 
 ## 기술 스택
 
@@ -88,14 +92,40 @@ src/
 ├── components/                 # 재사용 가능한 UI 컴포넌트
 │   ├── Header.jsx              # 내비게이션 헤더
 │   ├── Footer.jsx              # 페이지 푸터
-│   └── ProtectedRoute.jsx      # 라우트 보호 래퍼
+│   ├── ProtectedRoute.jsx      # 라우트 보호 래퍼
+│   ├── ActivityItem.jsx        # 활동 항목 컴포넌트
+│   ├── RecentActivity.jsx      # 최근 활동 표시
+│   ├── generator/              # 템플릿 생성기 컴포넌트
+│   │   ├── ChatInput.jsx       # 채팅 입력 컴포넌트
+│   │   ├── ChatMessage.jsx     # 채팅 메시지 표시
+│   │   ├── MainChatLayout.jsx  # 메인 채팅 레이아웃
+│   │   ├── ThreePanelLayout.jsx # 3패널 레이아웃
+│   │   └── WelcomeSection.jsx  # 환영 섹션
+│   ├── pricing/                # 가격 정책 컴포넌트
+│   │   ├── BackButton.jsx      # 뒤로가기 버튼
+│   │   ├── PricingCard.jsx     # 개별 가격 카드
+│   │   └── PricingCards.jsx    # 가격 카드 컨테이너
+│   └── statistics/             # 통계 컴포넌트
+│       ├── ApprovalTrendChart.jsx     # 승인 트렌드 차트
+│       ├── KPICards.jsx               # KPI 카드 표시
+│       └── StatusDistributionChart.jsx # 상태 분포 차트
 ├── pages/                      # 페이지 컴포넌트
 │   ├── LandingPage.jsx         # 공개 랜딩 페이지
 │   ├── LoginPage.jsx           # 사용자 로그인
 │   ├── SignupPage.jsx          # 사용자 회원가입
 │   ├── DashboardPage.jsx       # 사용자 대시보드
-│   ├── GeneratorPage.jsx       # AI 템플릿 생성기 (메인 기능)
+│   ├── GeneratorPage.jsx       # AI 템플릿 생성기 (원본)
+│   ├── GeneratorPageV2.jsx     # AI 템플릿 생성기 (메인 기능)
+│   ├── PricingPage.jsx         # 플랜 업그레이드 페이지
+│   ├── StatisticsPage.jsx      # 템플릿 승인 통계
 │   └── TemplatesPage.jsx       # 템플릿 관리 페이지
+├── data/                       # 데이터 및 설정
+│   ├── plans.js                # 가격 정책 설정
+│   ├── sampleActivities.js     # 샘플 활동 데이터
+│   └── mock/                   # 목 데이터 파일
+│       ├── rejectionReasons.json      # 목 거부 사유
+│       ├── templateActivity.json      # 목 템플릿 활동
+│       └── templateStatistics.json    # 목 통계 데이터
 ├── hooks/                      # 커스텀 React 훅
 │   └── useAuth.js              # 인증 로직
 └── utils/                      # 유틸리티 함수
@@ -115,8 +145,10 @@ src/
 ### 인증이 필요한 페이지
 
 - `/dashboard` - 사용자 대시보드
-- `/create` - AI 템플릿 생성기
+- `/create` - AI 템플릿 생성기 (GeneratorPageV2)
 - `/templates` - 템플릿 관리
+- `/pricing` - 플랜 업그레이드
+- `/statistics` - 템플릿 승인 통계
 
 ## API 연동
 
