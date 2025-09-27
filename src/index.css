@@ -7,3 +7,21 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* 활동 아이템 텍스트 말줄임 처리 */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+/* 활동 타임라인 호버 효과 */
+.activity-item:hover .activity-timeline {
+  background-color: rgb(79 70 229);
+}
+
+/* 부드러운 전환 효과 */
+.activity-transition {
+  transition: all 0.2s ease-in-out;
+}
