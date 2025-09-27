@@ -370,6 +370,10 @@ export default function GeneratorPageV2() {
   const [layoutMode, setLayoutMode] = useState("chat"); // 'chat' | 'template'
   const [hasGeneratedTemplate, setHasGeneratedTemplate] = useState(false);
 
+  // 승인 상태 관리
+  const [approvedTemplates, setApprovedTemplates] = useState(new Set());
+  const [approvingTemplates, setApprovingTemplates] = useState(new Set());
+
   const navigate = useNavigate();
   const { logout, user } = useAuth();
 
@@ -393,20 +397,38 @@ export default function GeneratorPageV2() {
     navigate("/login");
   };
 
+  // 승인 상태 확인 함수들
+  const isApproving = selectedVersion?.templateId
+    ? approvingTemplates.has(selectedVersion.templateId)
+    : false;
+  const isApproved = selectedVersion?.templateId
+    ? approvedTemplates.has(selectedVersion.templateId)
+    : false;
+
   // 템플릿 승인 요청 핸들러
   const handleApproveTemplate = async () => {
-    if (!selectedVersion || !selectedVersion.templateId) {
+    const templateId = selectedVersion?.templateId;
+
+    if (!templateId) {
       alert("승인할 템플릿을 선택해주세요.");
       return;
     }
 
+    // 이미 승인 중이거나 완료된 경우 중복 실행 방지
+    if (isApproving || isApproved) {
+      return;
+    }
+
+    // 승인 시작 - 승인 중 상태로 변경
+    setApprovingTemplates(prev => new Set(prev).add(templateId));
+
     try {
-      const response = await templateApi.approveTemplate(
-        selectedVersion.templateId
-      );
+      const response = await templateApi.approveTemplate(templateId);
 
       if (response?.data?.status === "APPROVE_REQUESTED") {
-        alert("템플릿 승인 요청이 완료되었습니다.");
+        // 승인 완료 상태로 변경
+        setApprovedTemplates(prev => new Set(prev).add(templateId));
+        // alert 대신 버튼 상태로 피드백 제공 (UI에서 처리)
       } else {
         console.error("템플릿 승인 요청 실패:", response);
         const errorMessage =
@@ -416,6 +438,13 @@ export default function GeneratorPageV2() {
     } catch (error) {
       console.error("템플릿 승인 요청 실패:", error);
       alert("템플릿 승인 요청 중 오류가 발생했습니다.");
+    } finally {
+      // 승인 중 상태 해제 (성공하면 승인 완료 상태가 유지됨)
+      setApprovingTemplates(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(templateId);
+        return newSet;
+      });
     }
   };
 
@@ -517,6 +546,8 @@ export default function GeneratorPageV2() {
           showVariables={showVariables}
           onToggleVariables={() => setShowVariables(!showVariables)}
           onApproveTemplate={handleApproveTemplate}
+          isApproving={isApproving}
+          isApproved={isApproved}
         />
       )}
     </div>

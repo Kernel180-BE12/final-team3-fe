@@ -172,6 +172,61 @@ const PreviewPanel = ({ version, showVariables }) => {
   );
 };
 
+// 승인 버튼 컴포넌트
+const ApprovalButton = ({ onApproveTemplate, selectedVersion, isApproving, isApproved }) => {
+  // 버튼 상태에 따른 텍스트와 스타일 결정
+  const getButtonConfig = () => {
+    if (isApproved) {
+      return {
+        text: "승인 요청 완료",
+        className: "bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium cursor-default",
+        disabled: true,
+        icon: (
+          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+        )
+      };
+    }
+
+    if (isApproving) {
+      return {
+        text: "승인 요청 중...",
+        className: "bg-indigo-400 text-white px-4 py-2 rounded-md text-sm font-medium cursor-wait",
+        disabled: true,
+        icon: (
+          <svg className="w-4 h-4 mr-2 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        )
+      };
+    }
+
+    return {
+      text: "이 템플릿 승인하기",
+      className: "bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-sm font-medium transition-colors",
+      disabled: !selectedVersion,
+      icon: null
+    };
+  };
+
+  const config = getButtonConfig();
+
+  return (
+    <button
+      onClick={onApproveTemplate}
+      disabled={config.disabled}
+      className={config.className}
+    >
+      <div className="flex items-center">
+        {config.icon}
+        {config.text}
+      </div>
+    </button>
+  );
+};
+
 // 메인 3패널 레이아웃
 const ThreePanelLayout = ({
   messages,
@@ -181,7 +236,9 @@ const ThreePanelLayout = ({
   selectedVersion,
   showVariables,
   onToggleVariables,
-  onApproveTemplate
+  onApproveTemplate,
+  isApproving = false,
+  isApproved = false
 }) => {
   return (
     <div className="flex-1 flex layout-transition">
@@ -212,13 +269,12 @@ const ThreePanelLayout = ({
               />
               <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
             </label>
-            <button
-              onClick={onApproveTemplate}
-              disabled={!selectedVersion}
-              className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-sm font-medium transition-colors"
-            >
-              이 템플릿 승인하기
-            </button>
+            <ApprovalButton
+              onApproveTemplate={onApproveTemplate}
+              selectedVersion={selectedVersion}
+              isApproving={isApproving}
+              isApproved={isApproved}
+            />
           </div>
         </header>
 
