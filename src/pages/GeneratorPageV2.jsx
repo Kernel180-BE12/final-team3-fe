@@ -225,7 +225,7 @@ const LogOutIcon = (props) => (
 );
 
 // 사이드바 컴포넌트 (기존 GeneratorPage와 동일)
-const Sidebar = ({ onLogout, user }) => {
+const Sidebar = ({ onLogout, user, navigate }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -528,7 +528,7 @@ export default function GeneratorPageV2() {
 
   return (
     <div className="flex h-screen w-full bg-white overflow-hidden">
-      <Sidebar onLogout={handleLogout} user={user} />
+      <Sidebar onLogout={handleLogout} user={user} navigate={navigate} />
 
       {layoutMode === "chat" ? (
         // 2패널 레이아웃: 사이드 + 메인 채팅
