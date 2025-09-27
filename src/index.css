@@ -25,3 +25,36 @@ body {
 .activity-transition {
   transition: all 0.2s ease-in-out;
 }
+
+/* GeneratorV2 레이아웃 전환 애니메이션 */
+.layout-transition {
+  transition: all 0.3s ease-in-out;
+}
+
+.panel-slide-in {
+  animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.chat-expand {
+  animation: expandWidth 0.4s ease-out;
+}
+
+@keyframes expandWidth {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 600px;
+  }
+}

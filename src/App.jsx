@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import DashboardPage from "./pages/DashboardPage";
 import GeneratorPage from "./pages/GeneratorPage";
+import GeneratorPageV2 from "./pages/GeneratorPageV2";
 import TemplatesPage from "./pages/TemplatesPage";
 import StatisticsPage from "./pages/StatisticsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -41,6 +42,15 @@ function App() {
 
           <Route
             path="/create"
+            element={
+              <ProtectedRoute>
+                <GeneratorPageV2 />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/create-old"
             element={
               <ProtectedRoute>
                 <GeneratorPage />
