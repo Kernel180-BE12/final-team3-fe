@@ -329,12 +329,12 @@ const Sidebar = ({ onLogout, user, navigate }) => {
                 <SlidersHorizontalIcon className="mr-3" />{" "}
                 <span>템플릿 맞춤 설정</span>
               </button>
-              <a
-                href="#"
+              <button
+                onClick={() => navigate('/settings')}
                 className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700"
               >
                 <SettingsIcon className="mr-3" /> <span>설정</span>
-              </a>
+              </button>
             </div>
             <div className="border-t border-gray-700 my-1"></div>
             <div className="p-2">

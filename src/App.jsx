@@ -10,6 +10,7 @@ import TemplatesPage from "./pages/TemplatesPage";
 import StatisticsPage from "./pages/StatisticsPage";
 import PricingPage from "./pages/PricingPage";
 import TemplateCustomizationPage from "./pages/TemplateCustomizationPage";
+import SettingsPage from "./pages/SettingsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import "./App.css";
@@ -83,6 +84,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <TemplateCustomizationPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
               </ProtectedRoute>
             }
           />
