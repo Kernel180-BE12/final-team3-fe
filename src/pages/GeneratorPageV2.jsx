@@ -243,15 +243,17 @@ const Sidebar = ({ onLogout, user, navigate }) => {
     };
   }, [menuRef]);
 
-
   return (
     <div className="w-16 bg-gray-800 text-white flex flex-col items-center z-20">
       {/* 상단 메뉴 */}
       <nav className="flex flex-col space-y-2 py-4">
         <div className="relative group flex justify-center">
-          <button className="p-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition-colors">
+          <a
+            href="/create"
+            className="p-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition-colors"
+          >
             <PlusCircleIcon className="w-6 h-6" />
-          </button>
+          </a>
           <div className="absolute left-full ml-4 px-2 py-1 bg-gray-900 text-white text-xs rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
             새 템플릿 생성
           </div>
@@ -320,20 +322,20 @@ const Sidebar = ({ onLogout, user, navigate }) => {
             <div className="border-t border-gray-700 my-1"></div>
             <div className="p-2">
               <button
-                onClick={() => navigate('/pricing')}
+                onClick={() => navigate("/pricing")}
                 className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700 text-left"
               >
                 <SparklesIcon className="mr-3" /> <span>플랜 업그레이드</span>
               </button>
               <button
-                onClick={() => navigate('/customization')}
+                onClick={() => navigate("/customization")}
                 className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700"
               >
                 <SlidersHorizontalIcon className="mr-3" />{" "}
                 <span>템플릿 맞춤 설정</span>
               </button>
               <button
-                onClick={() => navigate('/settings')}
+                onClick={() => navigate("/settings")}
                 className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700"
               >
                 <SettingsIcon className="mr-3" /> <span>설정</span>
@@ -428,14 +430,14 @@ export default function GeneratorPageV2() {
     }
 
     // 승인 시작 - 승인 중 상태로 변경
-    setApprovingTemplates(prev => new Set(prev).add(templateId));
+    setApprovingTemplates((prev) => new Set(prev).add(templateId));
 
     try {
       const response = await templateApi.approveTemplate(templateId);
 
       if (response?.data?.status === "APPROVE_REQUESTED") {
         // 승인 완료 상태로 변경
-        setApprovedTemplates(prev => new Set(prev).add(templateId));
+        setApprovedTemplates((prev) => new Set(prev).add(templateId));
         // alert 대신 버튼 상태로 피드백 제공 (UI에서 처리)
       } else {
         console.error("템플릿 승인 요청 실패:", response);
@@ -448,7 +450,7 @@ export default function GeneratorPageV2() {
       alert("템플릿 승인 요청 중 오류가 발생했습니다.");
     } finally {
       // 승인 중 상태 해제 (성공하면 승인 완료 상태가 유지됨)
-      setApprovingTemplates(prev => {
+      setApprovingTemplates((prev) => {
         const newSet = new Set(prev);
         newSet.delete(templateId);
         return newSet;
@@ -467,7 +469,9 @@ export default function GeneratorPageV2() {
 
       // HTTP 상태 코드가 200이 아닌 경우 에러 처리
       if (response && response.status && response.status !== 200) {
-        const errorMessage = response.error?.message || `서버 오류가 발생했습니다. (상태코드: ${response.status})`;
+        const errorMessage =
+          response.error?.message ||
+          `서버 오류가 발생했습니다. (상태코드: ${response.status})`;
 
         const botErrorMessage = {
           id: Date.now() + 1,
@@ -480,7 +484,8 @@ export default function GeneratorPageV2() {
 
       // 응답에 error 필드가 있는 경우 (상태코드와 별도로 에러 정보가 포함된 경우)
       if (response && response.error) {
-        const errorMessage = response.error.message || "알 수 없는 오류가 발생했습니다.";
+        const errorMessage =
+          response.error.message || "알 수 없는 오류가 발생했습니다.";
 
         const botErrorMessage = {
           id: Date.now() + 1,
