@@ -221,6 +221,28 @@ const LogOutIcon = (props) => (
   </svg>
 );
 
+const ListIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <line x1="8" x2="21" y1="6" y2="6"></line>
+    <line x1="8" x2="21" y1="12" y2="12"></line>
+    <line x1="8" x2="21" y1="18" y2="18"></line>
+    <line x1="3" x2="3.01" y1="6" y2="6"></line>
+    <line x1="3" x2="3.01" y1="12" y2="12"></line>
+    <line x1="3" x2="3.01" y1="18" y2="18"></line>
+  </svg>
+);
+
 // =========================================
 // 기본 메뉴 설정값들
 // =========================================
@@ -231,7 +253,8 @@ const DEFAULT_TOP_MENU = [
     icon: PlusCircleIcon,
     tooltip: "새 템플릿 생성",
     href: "/create",
-    className: "p-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition-colors"
+    className:
+      "p-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition-colors",
   },
   {
     id: "chat-history",
@@ -239,8 +262,8 @@ const DEFAULT_TOP_MENU = [
     tooltip: "채팅 기록",
     type: "chat-history", // 특별한 타입 지정
     className: "p-3 rounded-lg hover:bg-gray-700 transition-colors",
-    iconClassName: "w-6 h-6 text-gray-400"
-  }
+    iconClassName: "w-6 h-6 text-gray-400",
+  },
 ];
 
 const DEFAULT_MIDDLE_MENU = [
@@ -250,15 +273,15 @@ const DEFAULT_MIDDLE_MENU = [
     tooltip: "대시보드",
     href: "/dashboard",
     className: "p-3 rounded-lg hover:bg-gray-700 transition-colors",
-    iconClassName: "w-6 h-6 text-gray-400"
+    iconClassName: "w-6 h-6 text-gray-400",
   },
   {
     id: "templates-list",
-    icon: MessageSquareIcon,
+    icon: ListIcon,
     tooltip: "템플릿 목록",
     href: "/templates",
     className: "p-3 rounded-lg hover:bg-gray-700 transition-colors",
-    iconClassName: "w-6 h-6 text-gray-400"
+    iconClassName: "w-6 h-6 text-gray-400",
   },
   {
     id: "archive",
@@ -266,8 +289,8 @@ const DEFAULT_MIDDLE_MENU = [
     tooltip: "저장된 항목",
     onClick: null, // 비활성 상태
     className: "p-3 rounded-lg hover:bg-gray-700 transition-colors",
-    iconClassName: "w-6 h-6 text-gray-400"
-  }
+    iconClassName: "w-6 h-6 text-gray-400",
+  },
 ];
 
 const DEFAULT_USER_MENU = [
@@ -275,20 +298,20 @@ const DEFAULT_USER_MENU = [
     id: "upgrade",
     icon: SparklesIcon,
     label: "플랜 업그레이드",
-    href: "/pricing"
+    href: "/pricing",
   },
   {
     id: "customization",
     icon: SlidersHorizontalIcon,
     label: "템플릿 맞춤 설정",
-    href: "/customization"
+    href: "/customization",
   },
   {
     id: "settings",
     icon: SettingsIcon,
     label: "설정",
-    href: "/settings"
-  }
+    href: "/settings",
+  },
 ];
 
 // =========================================
@@ -304,7 +327,7 @@ export default function AppSidebar({
   middleMenuItems = DEFAULT_MIDDLE_MENU,
   userMenuItems = DEFAULT_USER_MENU,
   showHelpModal = true,
-  className = ""
+  className = "",
 }) {
   // 상태 관리
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -320,7 +343,10 @@ export default function AppSidebar({
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsMenuOpen(false);
       }
-      if (chatHistoryRef.current && !chatHistoryRef.current.contains(event.target)) {
+      if (
+        chatHistoryRef.current &&
+        !chatHistoryRef.current.contains(event.target)
+      ) {
         setIsChatHistoryVisible(false);
       }
     };
@@ -390,7 +416,7 @@ export default function AppSidebar({
   const renderMenuItems = (items) => {
     return items.map((item) => (
       <div key={item.id} className="relative group flex justify-center">
-        {item.type === "chat-history" ? (
+        {item.type === "chat-history-no-open" ? (
           // 채팅 기록 버튼 (호버 기능 포함)
           <div
             ref={chatHistoryRef}
@@ -410,17 +436,11 @@ export default function AppSidebar({
             />
           </div>
         ) : item.href ? (
-          <a
-            href={item.href}
-            className={item.className}
-          >
+          <a href={item.href} className={item.className}>
             <item.icon className={item.iconClassName || "w-6 h-6"} />
           </a>
         ) : (
-          <button
-            onClick={item.onClick}
-            className={item.className}
-          >
+          <button onClick={item.onClick} className={item.className}>
             <item.icon className={item.iconClassName || "w-6 h-6"} />
           </button>
         )}
@@ -434,7 +454,9 @@ export default function AppSidebar({
   };
 
   return (
-    <div className={`w-16 bg-gray-800 text-white flex flex-col items-center z-20 ${className}`}>
+    <div
+      className={`w-16 bg-gray-800 text-white flex flex-col items-center z-20 ${className}`}
+    >
       {/* 상단 메뉴 */}
       <nav className="flex flex-col space-y-2 py-4">
         {renderMenuItems(topMenuItems)}
