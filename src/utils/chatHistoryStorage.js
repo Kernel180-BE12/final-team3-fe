@@ -68,6 +68,13 @@ export const chatHistoryStorage = {
         return null;
       }
 
+      // 사용자 메시지가 있는지 확인
+      const hasUserMessage = chatSession.messages.some(msg => msg.type === 'user');
+      if (!hasUserMessage) {
+        console.warn('사용자 메시지가 없는 세션은 저장하지 않습니다.');
+        return null;
+      }
+
       const history = JSON.parse(localStorage.getItem(CHAT_HISTORY_KEY) || '[]');
 
       // 첫 번째 사용자 메시지 찾기
