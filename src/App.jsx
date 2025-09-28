@@ -8,6 +8,7 @@ import GeneratorPage from "./pages/GeneratorPage";
 import GeneratorPageV2 from "./pages/GeneratorPageV2";
 import GeneratorPageV3 from "./pages/GeneratorPageV3";
 import TemplatesPage from "./pages/TemplatesPage";
+import TemplatesPageV2 from "./pages/TemplatesPageV2";
 import StatisticsPage from "./pages/StatisticsPage";
 import PricingPage from "./pages/PricingPage";
 import TemplateCustomizationPage from "./pages/TemplateCustomizationPage";
@@ -40,6 +41,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <TemplatesPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/templates-v2"
+            element={
+              <ProtectedRoute>
+                <TemplatesPageV2 />
               </ProtectedRoute>
             }
           />
