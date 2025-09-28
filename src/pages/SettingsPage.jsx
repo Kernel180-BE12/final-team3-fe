@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import SettingsSidebar from "../components/settings/SettingsSidebar";
+import ProfileSettings from "../components/settings/ProfileSettings";
 
 // 기본 아이콘들
 const ArrowLeftIcon = (props) => (
@@ -34,15 +35,7 @@ export default function SettingsPage() {
   const renderContent = () => {
     switch (currentSection) {
       case "profile":
-        return (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">프로필 설정</h2>
-            <div className="bg-gray-50 p-8 rounded-lg text-center">
-              <p className="text-gray-600">프로필 설정 내용이 여기에 표시됩니다.</p>
-              <p className="text-sm text-gray-500 mt-2">곧 구현될 예정입니다.</p>
-            </div>
-          </div>
-        );
+        return <ProfileSettings />;
       case "security":
         return (
           <div className="space-y-6">
