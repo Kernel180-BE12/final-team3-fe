@@ -44,10 +44,15 @@
       "Bash(mkdir:*)",
       "Bash(npm run lint:*)",
       "WebFetch(domain:claude.ai)",
-      "Bash(xargs ls:*)"
+      "Bash(xargs ls:*)",
+      "WebFetch(domain:kakaobusiness.gitbook.io)"
     ],
     "deny": [],
     "ask": []
   },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ],
   "outputStyle": "Korean Developer"
 }
