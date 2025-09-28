@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import HelpModal from "@/components/help/HelpModal";
+import ChatHistoryPanel from "@/components/chat/ChatHistoryPanel";
 
 // =========================================
 // 모든 아이콘 컴포넌트들 (파일 상단에 통합)
@@ -233,10 +234,10 @@ const DEFAULT_TOP_MENU = [
     className: "p-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition-colors"
   },
   {
-    id: "templates",
-    icon: LayoutGridIcon,
-    tooltip: "템플릿 보관함",
-    href: "/templates",
+    id: "chat-history",
+    icon: MessageSquareIcon,
+    tooltip: "채팅 기록",
+    type: "chat-history", // 특별한 타입 지정
     className: "p-3 rounded-lg hover:bg-gray-700 transition-colors",
     iconClassName: "w-6 h-6 text-gray-400"
   }
@@ -298,6 +299,7 @@ export default function AppSidebar({
   user,
   onLogout,
   onNavigate,
+  onSelectChat,
   topMenuItems = DEFAULT_TOP_MENU,
   middleMenuItems = DEFAULT_MIDDLE_MENU,
   userMenuItems = DEFAULT_USER_MENU,
@@ -307,7 +309,10 @@ export default function AppSidebar({
   // 상태 관리
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
+  const [isChatHistoryVisible, setIsChatHistoryVisible] = useState(false);
   const menuRef = useRef(null);
+  const chatHistoryRef = useRef(null);
+  const chatHistoryTimeoutRef = useRef(null);
 
   // 드롭다운 메뉴 외부 클릭 감지
   useEffect(() => {
@@ -315,12 +320,24 @@ export default function AppSidebar({
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsMenuOpen(false);
       }
+      if (chatHistoryRef.current && !chatHistoryRef.current.contains(event.target)) {
+        setIsChatHistoryVisible(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [menuRef]);
+  }, [menuRef, chatHistoryRef]);
+
+  // 컴포넌트 언마운트 시 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (chatHistoryTimeoutRef.current) {
+        clearTimeout(chatHistoryTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // 네비게이션 핸들러
   const handleNavigation = (path) => {
@@ -335,11 +352,64 @@ export default function AppSidebar({
     setIsMenuOpen(false);
   };
 
+  // 채팅 기록 패널 핸들러 (딜레이 메커니즘 포함)
+  const handleChatHistoryHover = (isHovering) => {
+    // 기존 타이머가 있다면 취소
+    if (chatHistoryTimeoutRef.current) {
+      clearTimeout(chatHistoryTimeoutRef.current);
+      chatHistoryTimeoutRef.current = null;
+    }
+
+    if (isHovering) {
+      // 즉시 표시 (딜레이 없음)
+      setIsChatHistoryVisible(true);
+    } else {
+      // 300ms 딜레이 후 숨김
+      chatHistoryTimeoutRef.current = setTimeout(() => {
+        setIsChatHistoryVisible(false);
+        chatHistoryTimeoutRef.current = null;
+      }, 300);
+    }
+  };
+
+  // 채팅 선택 핸들러
+  const handleSelectChat = (chatSession) => {
+    setIsChatHistoryVisible(false);
+    if (onSelectChat) {
+      onSelectChat(chatSession);
+    }
+  };
+
+  // 채팅 삭제 핸들러
+  const handleDeleteChat = (sessionId) => {
+    // 패널에서 삭제 후 추가 작업이 필요하면 여기에 구현
+    console.log(`채팅 세션 삭제됨: ${sessionId}`);
+  };
+
   // 메뉴 아이템 렌더링 함수
   const renderMenuItems = (items) => {
     return items.map((item) => (
       <div key={item.id} className="relative group flex justify-center">
-        {item.href ? (
+        {item.type === "chat-history" ? (
+          // 채팅 기록 버튼 (호버 기능 포함)
+          <div
+            ref={chatHistoryRef}
+            onMouseEnter={() => handleChatHistoryHover(true)}
+            onMouseLeave={() => handleChatHistoryHover(false)}
+            className="relative"
+          >
+            <button className={item.className}>
+              <item.icon className={item.iconClassName || "w-6 h-6"} />
+            </button>
+
+            {/* 채팅 기록 패널 */}
+            <ChatHistoryPanel
+              isVisible={isChatHistoryVisible}
+              onSelectChat={handleSelectChat}
+              onDeleteChat={handleDeleteChat}
+            />
+          </div>
+        ) : item.href ? (
           <a
             href={item.href}
             className={item.className}
@@ -354,7 +424,9 @@ export default function AppSidebar({
             <item.icon className={item.iconClassName || "w-6 h-6"} />
           </button>
         )}
-        <div className="absolute left-full ml-4 px-2 py-1 bg-gray-900 text-white text-xs rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+
+        {/* 툴팁 */}
+        <div className="absolute left-full ml-4 px-2 py-1 bg-gray-900 text-white text-xs rounded-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-40">
           {item.tooltip}
         </div>
       </div>

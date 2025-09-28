@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { templateApi, logout as apiLogout } from "../utils/api";
 import { useAuth } from "../hooks/useAuth";
+import { chatHistoryStorage } from "../utils/chatHistoryStorage";
 
 // 새로운 컴포넌트들 import
 import MainChatLayout from "@/components/generator/MainChatLayout";
@@ -25,6 +26,43 @@ export default function GeneratorPageV3() {
   const navigate = useNavigate();
   const { logout, user } = useAuth();
 
+  // 채팅 세션 관리
+  const [currentSessionId, setCurrentSessionId] = useState(null);
+  const chatSaveTimeoutRef = useRef(null);
+
+  // 채팅 세션 저장 (디바운스 적용) - 먼저 정의
+  const saveChatSession = useCallback((messageList, sessionId = null) => {
+    if (!messageList || messageList.length === 0) return;
+
+    // 기존 타이머 제거
+    if (chatSaveTimeoutRef.current) {
+      clearTimeout(chatSaveTimeoutRef.current);
+    }
+
+    // 3초 후 저장 (사용자 입력이 완료된 후)
+    chatSaveTimeoutRef.current = setTimeout(() => {
+      try {
+        const chatSession = {
+          id: sessionId || currentSessionId || `chat_${Date.now()}`,
+          messages: messageList.map(msg => ({
+            id: msg.id || `msg_${Date.now()}_${Math.random()}`,
+            type: msg.type,
+            content: msg.content,
+            timestamp: msg.timestamp || new Date().toISOString()
+          })),
+          createdAt: sessionId ? undefined : new Date().toISOString() // 새 세션만 생성일 설정
+        };
+
+        const savedSessionId = chatHistoryStorage.save(chatSession);
+        if (savedSessionId && !currentSessionId) {
+          setCurrentSessionId(savedSessionId);
+        }
+      } catch (error) {
+        console.error('채팅 세션 저장 실패:', error);
+      }
+    }, 3000);
+  }, [currentSessionId]);
+
   // 템플릿이 생성되면 3패널 모드로 전환
   useEffect(() => {
     if (selectedVersion && !hasGeneratedTemplate) {
@@ -33,8 +71,115 @@ export default function GeneratorPageV3() {
     }
   }, [selectedVersion, hasGeneratedTemplate]);
 
+  // 메시지 변경 시 자동 저장
+  useEffect(() => {
+    if (messages.length > 0) {
+      saveChatSession(messages, currentSessionId);
+    }
+  }, [messages, saveChatSession, currentSessionId]);
+
+  // 페이지 언로드 시 채팅 저장
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (messages.length > 0) {
+        // 즉시 저장 (비동기 작업 불가)
+        if (chatSaveTimeoutRef.current) {
+          clearTimeout(chatSaveTimeoutRef.current);
+        }
+        chatHistoryStorage.save({
+          id: currentSessionId || `chat_${Date.now()}`,
+          messages: messages.map(msg => ({
+            id: msg.id || `msg_${Date.now()}_${Math.random()}`,
+            type: msg.type,
+            content: msg.content,
+            timestamp: msg.timestamp || new Date().toISOString()
+          }))
+        });
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      // 컴포넌트 언마운트 시에도 저장
+      if (messages.length > 0) {
+        handleBeforeUnload();
+      }
+    };
+  }, [messages, currentSessionId]);
+
+  // 새 채팅 시작
+  const startNewChat = useCallback(() => {
+    // 현재 채팅이 있다면 저장
+    if (messages.length > 0 && currentSessionId) {
+      // 즉시 저장 (타이머 취소하고)
+      if (chatSaveTimeoutRef.current) {
+        clearTimeout(chatSaveTimeoutRef.current);
+      }
+      chatHistoryStorage.save({
+        id: currentSessionId,
+        messages: messages.map(msg => ({
+          id: msg.id || `msg_${Date.now()}_${Math.random()}`,
+          type: msg.type,
+          content: msg.content,
+          timestamp: msg.timestamp || new Date().toISOString()
+        }))
+      });
+    }
+
+    // 상태 초기화
+    setMessages([]);
+    setSelectedVersion(null);
+    setLayoutMode("chat");
+    setHasGeneratedTemplate(false);
+    setCurrentSessionId(null);
+    setShowVariables(false);
+  }, [messages, currentSessionId]);
+
+  // 기존 채팅 불러오기
+  const loadChatSession = useCallback((chatSession) => {
+    try {
+      // 현재 채팅 저장
+      if (messages.length > 0 && currentSessionId) {
+        chatHistoryStorage.save({
+          id: currentSessionId,
+          messages: messages
+        });
+      }
+
+      // 선택된 채팅 로드
+      setMessages(chatSession.messages || []);
+      setCurrentSessionId(chatSession.id);
+
+      // 채팅에 템플릿이 있으면 템플릿 모드로
+      const hasTemplate = chatSession.messages?.some(msg =>
+        msg.type === 'assistant' && msg.content?.includes &&
+        (msg.content.includes('템플릿') || msg.content.includes('알림톡'))
+      );
+
+      if (hasTemplate) {
+        setLayoutMode("template");
+        setHasGeneratedTemplate(true);
+      } else {
+        setLayoutMode("chat");
+        setHasGeneratedTemplate(false);
+      }
+
+      // 템플릿 생성 페이지로 이동
+      navigate('/create');
+    } catch (error) {
+      console.error('채팅 세션 로드 실패:', error);
+      alert('채팅 기록을 불러오는데 실패했습니다.');
+    }
+  }, [messages, currentSessionId, navigate]);
+
   // 로그아웃 핸들러
   const handleLogout = async () => {
+    // 로그아웃 전 현재 채팅 저장
+    if (messages.length > 0) {
+      saveChatSession(messages, currentSessionId);
+    }
+
     try {
       await apiLogout();
     } catch (error) {
@@ -184,6 +329,7 @@ export default function GeneratorPageV3() {
         user={user}
         onLogout={handleLogout}
         onNavigate={navigate}
+        onSelectChat={loadChatSession}
         showHelpModal={true}
       />
 
