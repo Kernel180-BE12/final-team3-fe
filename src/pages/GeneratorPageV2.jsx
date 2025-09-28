@@ -6,6 +6,7 @@ import { useAuth } from "../hooks/useAuth";
 // 새로운 컴포넌트들 import
 import MainChatLayout from "@/components/generator/MainChatLayout";
 import ThreePanelLayout from "@/components/generator/ThreePanelLayout";
+import HelpModal from "@/components/help/HelpModal";
 
 // 기존 사이드바 컴포넌트들 (재사용)
 const PlusCircleIcon = (props) => (
@@ -227,6 +228,7 @@ const LogOutIcon = (props) => (
 // 사이드바 컴포넌트 (기존 GeneratorPage와 동일)
 const Sidebar = ({ onLogout, user, navigate }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -240,6 +242,7 @@ const Sidebar = ({ onLogout, user, navigate }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [menuRef]);
+
 
   return (
     <div className="w-16 bg-gray-800 text-white flex flex-col items-center z-20">
@@ -338,12 +341,12 @@ const Sidebar = ({ onLogout, user, navigate }) => {
             </div>
             <div className="border-t border-gray-700 my-1"></div>
             <div className="p-2">
-              <a
-                href="#"
+              <button
+                onClick={() => setIsHelpModalOpen(true)}
                 className="flex items-center w-full px-3 py-2 text-sm rounded-md hover:bg-gray-700"
               >
                 <LifeBuoyIcon className="mr-3" /> <span>도움말</span>
-              </a>
+              </button>
               <a
                 href="#"
                 onClick={onLogout}
@@ -356,6 +359,12 @@ const Sidebar = ({ onLogout, user, navigate }) => {
           </div>
         )}
       </div>
+
+      {/* 도움말 모달 */}
+      <HelpModal
+        isOpen={isHelpModalOpen}
+        onClose={() => setIsHelpModalOpen(false)}
+      />
     </div>
   );
 };

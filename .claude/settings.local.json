@@ -45,7 +45,9 @@
       "Bash(npm run lint:*)",
       "WebFetch(domain:claude.ai)",
       "Bash(xargs ls:*)",
-      "WebFetch(domain:kakaobusiness.gitbook.io)"
+      "WebFetch(domain:kakaobusiness.gitbook.io)",
+      "Bash(find:*)",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []
