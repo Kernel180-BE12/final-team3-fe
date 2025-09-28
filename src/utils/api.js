@@ -214,6 +214,36 @@ export const templateApi = {
       console.error('템플릿 승인 요청 오류:', error);
       throw error;
     }
+  },
+
+  // 템플릿 목록 조회 API (페이지네이션 및 필터링 지원)
+  getTemplates: async (params = {}) => {
+    try {
+      const { page = 1, size = 10, status = 'APPROVE_REQUESTED' } = params;
+
+      const queryParams = new URLSearchParams({
+        page: page.toString(),
+        size: size.toString(),
+        status: status  // status는 항상 필수로 전송
+      });
+
+      const response = await api.get(`/templates?${queryParams.toString()}`);
+
+      if (response && response.ok) {
+        const data = await response.json();
+        return data;
+      }
+
+      if (response && !response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      }
+
+      throw new Error('템플릿 목록 조회 실패');
+    } catch (error) {
+      console.error('템플릿 목록 조회 오류:', error);
+      throw error;
+    }
   }
 };
 

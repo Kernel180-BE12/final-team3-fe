@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { templateApi } from '@/utils/api';
 
 // --- 템플릿 페이지 전용 아이콘들 ---
 const SearchIcon = (props) => (
@@ -29,6 +30,7 @@ const ChevronRightIcon = (props) => (
 );
 
 
+// Mock 데이터 제거 - 실제 API 사용
 const mockApiResponse = {
   "data": {
     "items": [
@@ -102,7 +104,7 @@ export default function TemplatesPageV3() {
   
   const [templates, setTemplates] = useState([]); 
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('ALL');
+  const [statusFilter, setStatusFilter] = useState('APPROVE_REQUESTED');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
@@ -114,66 +116,39 @@ export default function TemplatesPageV3() {
     const fetchTemplates = async () => {
       setIsLoading(true);
       setError(null);
-      
-      // --- 실제 API 호출 로직 (주석 처리됨) ---
-      // 나중에 이 부분을 주석 해제하여 사용하세요.
-      /*
+
+      // 실제 API 호출
       try {
-        const params = new URLSearchParams({
-            page: currentPage,
-            size: itemsPerPage,
-        });
-        if (statusFilter !== 'ALL') {
-            params.append('status', statusFilter);
-        }
-        if (searchTerm) {
-            params.append('query', searchTerm);
-        }
-        
-        const response = await fetch(`http://localhost:8580/api/templates?${params.toString()}`);
-        if (!response.ok) {
-          throw new Error('서버 응답 오류');
-        }
-        const result = await response.json();
-        if (result.success) {
+        const params = {
+          page: currentPage,
+          size: itemsPerPage,
+          status: statusFilter  // status는 항상 필수로 전송
+        };
+
+        const result = await templateApi.getTemplates(params);
+
+        if (result.data) {
           setTemplates(result.data.items);
           setTotalPages(Math.ceil(result.data.total / result.data.size));
-        } else {
-          throw new Error(result.message || 'API 요청 실패');
         }
-      } catch (err) {
-        setError(err.message);
-        setTemplates([]); // 에러 발생 시 템플릿 목록을 비웁니다.
+      } catch (error) {
+        console.error('템플릿 목록 조회 실패:', error);
+
+        // 에러 타입별 처리
+        if (error.message.includes('400')) {
+          setError('잘못된 요청입니다. 페이지를 새로고침해주세요.');
+        } else if (error.message.includes('401')) {
+          setError('로그인이 필요합니다. 다시 로그인해주세요.');
+          // 로그인 페이지로 리다이렉트는 api.js에서 처리됨
+        } else if (error.message.includes('500')) {
+          setError('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+        } else {
+          setError('템플릿 목록을 불러오는데 실패했습니다.');
+        }
+        setTemplates([]);
       } finally {
         setIsLoading(false);
       }
-      */
-      
-      // --- 목업 데이터를 사용한 시뮬레이션 로직 ---
-      // 실제 API를 사용할 때는 이 부분을 삭제하세요.
-      setTimeout(() => {
-        let filteredItems = mockApiResponse.data.items;
-
-        if (statusFilter !== 'ALL') {
-          filteredItems = filteredItems.filter(item => item.status === statusFilter);
-        }
-
-        if (searchTerm) {
-          filteredItems = filteredItems.filter(
-            item =>
-              item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              item.content.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-        }
-
-        setTotalPages(Math.ceil(filteredItems.length / itemsPerPage));
-        
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        setTemplates(filteredItems.slice(startIndex, endIndex));
-
-        setIsLoading(false);
-      }, 500);
     };
 
     fetchTemplates();
@@ -209,21 +184,24 @@ export default function TemplatesPageV3() {
     }
   };
 
-  const handleDelete = (templateId) => {
+  const handleDelete = async (templateId) => {
     if (window.confirm('정말로 이 템플릿을 삭제하시겠습니까?')) {
-        // This would be a DELETE API call in a real app
-        const updatedTotal = mockApiResponse.data.total - 1;
-        mockApiResponse.data.items = mockApiResponse.data.items.filter(t => t.id !== templateId);
-        mockApiResponse.data.total = updatedTotal;
-        
-        handlePageChange(currentPage); // Refetch current page
+      try {
+        // 실제 삭제 API 호출이 필요한 경우 여기에 추가
+        // await templateApi.deleteTemplate(templateId);
+
+        // 현재는 목록 새로고침으로 대체
+        alert('삭제 기능은 현재 준비 중입니다.');
+      } catch (error) {
+        console.error('템플릿 삭제 실패:', error);
+        setError('템플릿 삭제에 실패했습니다.');
+      }
     }
   };
 
   const handlePageChange = (page) => {
-      const newTotalPages = Math.ceil(mockApiResponse.data.total / itemsPerPage);
-      if(page < 1 || (page > newTotalPages && newTotalPages > 0)) return;
-      setCurrentPage(page);
+    if (page < 1 || (page > totalPages && totalPages > 0)) return;
+    setCurrentPage(page);
   }
   
   if (isLoading && templates.length === 0) {
@@ -268,7 +246,6 @@ export default function TemplatesPageV3() {
                     onChange={(e) => setStatusFilter(e.target.value)}
                     className="flex-shrink-0 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 py-2 px-3"
                 >
-                    <option value="ALL">전체 상태</option>
                     <option value="APPROVE_REQUESTED">요청</option>
                     <option value="APPROVED">승인</option>
                     <option value="REJECTED">반려</option>
@@ -282,9 +259,21 @@ export default function TemplatesPageV3() {
               </div>
           </div>
 
+          {error && (
+            <div className="mb-8 col-span-full text-center py-16 bg-red-50 rounded-lg border border-red-200">
+              <AlertTriangleIcon className="mx-auto w-12 h-12 text-red-500 mb-4" />
+              <p className="text-red-600 mb-4">{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              >
+                다시 시도
+              </button>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
-            {templates.length > 0 ? (
+            {!error && templates.length > 0 ? (
               templates.map((template) => (
                 <div key={template.id} className="bg-white rounded-lg shadow-sm hover:shadow-lg flex flex-col border border-gray-200 transform transition duration-300 hover:-translate-y-1">
                   <div className="p-4 border-b flex justify-between items-center">
@@ -354,7 +343,7 @@ export default function TemplatesPageV3() {
             ) : (
               <div className="col-span-full text-center py-16 bg-white rounded-lg shadow-sm border border-gray-200">
                 <p className="text-gray-500">
-                  {searchTerm || statusFilter !== 'ALL' ? '필터링된 결과가 없습니다.' : '표시할 템플릿이 없습니다.'}
+                  {searchTerm ? '검색 결과가 없습니다.' : '표시할 템플릿이 없습니다.'}
                 </p>
               </div>
             )}
