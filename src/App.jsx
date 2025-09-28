@@ -41,7 +41,7 @@ function App() {
             path="/templates"
             element={
               <ProtectedRoute>
-                <TemplatesPage />
+                <TemplatesPageV3 />
               </ProtectedRoute>
             }
           />
@@ -68,7 +68,7 @@ function App() {
             path="/create"
             element={
               <ProtectedRoute>
-                <GeneratorPageV2 />
+                <GeneratorPageV3 />
               </ProtectedRoute>
             }
           />
