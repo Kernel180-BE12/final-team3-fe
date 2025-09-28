@@ -6,6 +6,7 @@ import SignupPage from "./pages/SignupPage";
 import DashboardPage from "./pages/DashboardPage";
 import GeneratorPage from "./pages/GeneratorPage";
 import GeneratorPageV2 from "./pages/GeneratorPageV2";
+import GeneratorPageV3 from "./pages/GeneratorPageV3";
 import TemplatesPage from "./pages/TemplatesPage";
 import StatisticsPage from "./pages/StatisticsPage";
 import PricingPage from "./pages/PricingPage";
@@ -48,6 +49,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <GeneratorPageV2 />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/create-v3"
+            element={
+              <ProtectedRoute>
+                <GeneratorPageV3 />
               </ProtectedRoute>
             }
           />
