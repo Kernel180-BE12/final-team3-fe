@@ -4,6 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import SettingsSidebar from "../components/settings/SettingsSidebar";
 import ProfileSettings from "../components/settings/ProfileSettings";
 import SecuritySettings from "../components/settings/SecuritySettings";
+import NotificationSettings from "../components/settings/NotificationSettings";
 
 // 기본 아이콘들
 const ArrowLeftIcon = (props) => (
@@ -40,15 +41,7 @@ export default function SettingsPage() {
       case "security":
         return <SecuritySettings />;
       case "notifications":
-        return (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">알림 설정</h2>
-            <div className="bg-gray-50 p-8 rounded-lg text-center">
-              <p className="text-gray-600">알림 설정 내용이 여기에 표시됩니다.</p>
-              <p className="text-sm text-gray-500 mt-2">곧 구현될 예정입니다.</p>
-            </div>
-          </div>
-        );
+        return <NotificationSettings />;
       case "account":
         return (
           <div className="space-y-6">
