@@ -102,28 +102,33 @@ const PreviewPanel = ({ version, showVariables }) => {
   const formatContent = (content) => {
     if (!content) return "";
 
+    let processedContent = content;
+
     if (showVariables) {
       if (!version.variables || version.variables.length === 0) {
-        return content;
+        processedContent = content;
+      } else {
+        processedContent = version.variables.reduce((acc, variable) => {
+          return acc.replace(
+            new RegExp(variable.placeholder, "g"),
+            variable.variableKey
+          );
+        }, content);
       }
-      return version.variables.reduce((acc, variable) => {
-        return acc.replace(
-          new RegExp(variable.placeholder, "g"),
-          variable.variableKey
-        );
-      }, content);
+    } else {
+      if (version.variables) {
+        processedContent = version.variables.reduce((acc, variable) => {
+          const highlightedVar = `<span class="font-bold text-yellow-700 bg-yellow-200 px-1 rounded-sm">${variable.placeholder}</span>`;
+          return acc.replace(
+            new RegExp(variable.placeholder, "g"),
+            highlightedVar
+          );
+        }, content);
+      }
     }
 
-    if (version.variables) {
-      return version.variables.reduce((acc, variable) => {
-        const highlightedVar = `<span class="font-bold text-yellow-700 bg-yellow-200 px-1 rounded-sm">${variable.placeholder}</span>`;
-        return acc.replace(
-          new RegExp(variable.placeholder, "g"),
-          highlightedVar
-        );
-      }, content);
-    }
-    return content;
+    // \\n 문자열을 <br> 태그로 변환하여 줄바꿈 처리
+    return processedContent.replace(/\\n/g, '<br>');
   };
 
   return (
