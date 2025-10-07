@@ -9,6 +9,7 @@
 ### 주요 기능
 
 - **AI 템플릿 생성**: 채팅 인터페이스를 통한 AI 기반 알림톡 템플릿 자동 생성
+- **채팅 기록 시스템**: 대화 세션 자동 저장 및 검색 가능한 기록 관리
 - **사용자 인증**: 이메일 기반 회원가입 및 로그인 (이메일 인증 포함)
 - **실시간 미리보기**: 생성된 템플릿의 실시간 프리뷰 및 변수 시스템
 - **템플릿 관리**: 생성, 조회, 승인, 관리 및 상태 추적
@@ -95,6 +96,10 @@ src/
 │   ├── ProtectedRoute.jsx      # 라우트 보호 래퍼
 │   ├── ActivityItem.jsx        # 활동 항목 컴포넌트
 │   ├── RecentActivity.jsx      # 최근 활동 표시
+│   ├── chat/                   # 채팅 기록 관련 컴포넌트
+│   │   └── ChatHistoryPanel.jsx # 채팅 기록 패널 (검색, 삭제 기능 포함)
+│   ├── layout/                 # 레이아웃 컴포넌트
+│   │   └── AppSidebar.jsx      # 애플리케이션 사이드바 (채팅 기록 호버 포함)
 │   ├── generator/              # 템플릿 생성기 컴포넌트
 │   │   ├── ChatInput.jsx       # 채팅 입력 컴포넌트
 │   │   ├── ChatMessage.jsx     # 채팅 메시지 표시
@@ -130,7 +135,8 @@ src/
 │   └── useAuth.js              # 인증 로직
 └── utils/                      # 유틸리티 함수
     ├── api.js                  # API 통신 헬퍼
-    └── jsonParser.js           # JSON 파싱 유틸리티 (에러 처리용)
+    ├── jsonParser.js           # JSON 파싱 유틸리티 (에러 처리용)
+    └── chatHistoryStorage.js   # 채팅 기록 localStorage 관리
 ```
 
 ## 인증 시스템
@@ -240,6 +246,29 @@ chore: 빌드 업무 수정, 패키지 매니저 수정
 1. **포트 충돌**: 다른 포트 사용 `npm run dev -- --port 3000`
 2. **의존성 오류**: `npm install` 재실행
 3. **환경변수 인식 안됨**: 서버 재시작 필요
+
+### SPA 라우팅 문제 해결 (Vercel 배포)
+
+배포 환경에서 페이지 직접 접속 시 404 오류가 발생하는 경우:
+
+**원인**: SPA의 클라이언트 사이드 라우팅과 서버 사이드 라우팅 충돌
+
+**해결방법**: `vercel.json` 설정으로 모든 요청을 `index.html`로 리다이렉트
+
+```json
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "http://54.116.0.21:8080/api/:path*"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
+```
 
 ### 디버깅
 

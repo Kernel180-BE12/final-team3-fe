@@ -214,7 +214,7 @@ const ChatHistoryPanel = ({
         <div className="p-3 border-t border-gray-100 bg-gray-50 text-xs text-gray-500">
           <div className="flex justify-between">
             <span>총 {chatHistory.length}개 대화</span>
-            <span>최대 50개까지 저장</span>
+            <span>최대 10개까지 저장</span>
           </div>
         </div>
       )}

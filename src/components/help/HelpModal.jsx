@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import HelpTabs from './HelpTabs';
-import HelpContent from './HelpContent';
+import React, { useState } from "react";
+import HelpTabs from "./HelpTabs";
+import HelpContent from "./HelpContent";
 
 const CloseIcon = (props) => (
   <svg
@@ -21,7 +21,7 @@ const CloseIcon = (props) => (
 );
 
 export default function HelpModal({ isOpen, onClose }) {
-  const [activeTab, setActiveTab] = useState('infotalk');
+  const [activeTab, setActiveTab] = useState("infotalk");
 
   if (!isOpen) return null;
 
@@ -29,7 +29,7 @@ export default function HelpModal({ isOpen, onClose }) {
     <div className="fixed inset-0 z-50 overflow-y-auto">
       {/* 배경 오버레이 */}
       <div
-        className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+        className="fixed inset-0 bg-[#f3f2ec] bg-opacity-50 transition-opacity"
         onClick={onClose}
       ></div>
 
@@ -54,10 +54,7 @@ export default function HelpModal({ isOpen, onClose }) {
           <div className="flex h-[calc(90vh-120px)]">
             {/* 탭 네비게이션 */}
             <div className="w-64 border-r border-gray-200 bg-gray-50">
-              <HelpTabs
-                activeTab={activeTab}
-                onTabChange={setActiveTab}
-              />
+              <HelpTabs activeTab={activeTab} onTabChange={setActiveTab} />
             </div>
 
             {/* 메인 콘텐츠 */}

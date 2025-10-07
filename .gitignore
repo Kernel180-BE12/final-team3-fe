@@ -74,3 +74,7 @@ vite.config.ts.timestamp-*
 
 # Personal Claude settings
 .claude/settings.local.json
+
+# Personal Gemini settings
+GEMINI.md
+docs_gemini/
